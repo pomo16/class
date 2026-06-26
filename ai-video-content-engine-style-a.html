@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI视频内容引擎 Style A</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* ===========================================
+           CSS CUSTOM PROPERTIES: THEME
+           Edit these variables to quickly restyle the deck.
+           =========================================== */
+        :root {
+            --stage-bg: #050504;
+            --slide-bg: #080806;
+            --paper: #EFE5D2;
+            --paper-dim: rgba(239, 229, 210, 0.66);
+            --paper-faint: rgba(239, 229, 210, 0.18);
+            --line: rgba(239, 229, 210, 0.18);
+            --amber: #F7B24A;
+            --amber-soft: rgba(247, 178, 74, 0.18);
+            --green: #74F0B2;
+            --green-soft: rgba(116, 240, 178, 0.16);
+            --red: #E9523C;
+            --black: #050504;
+            --font-display: "Noto Sans SC", "Archivo", sans-serif;
+            --font-body: "Noto Sans SC", "Archivo", sans-serif;
+            --font-mono: "IBM Plex Mono", monospace;
+            --ease: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* ===========================================
+           RESET
+           Keep all slide geometry predictable.
+           =========================================== */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        /* ===========================================
+           FIXED 16:9 STAGE: MANDATORY BASE STYLES
+           Include this ENTIRE file in every presentation.
+           Slides are authored at 1920×1080 and scaled as a whole.
+           =========================================== */
+
+        /* 1. Lock the browser viewport */
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background: var(--stage-bg, #000);
+        }
+
+        /* 2. Full-window deck viewport */
+        .deck-viewport {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            background: var(--stage-bg, #000);
+        }
+
+        /* 3. Fixed 16:9 design canvas.
+           JavaScript sets transform: translate(...) scale(...). */
+        .deck-stage {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            transform-origin: 0 0;
+            background: var(--slide-bg, #fff);
+        }
+
+        /* 4. Slides stack inside the fixed stage.
+           Content must be laid out at 1920×1080, not reflowed per device. */
+        .slide {
+            position: absolute;
+            inset: 0;
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            display: block;
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+            background: var(--slide-bg, #fff);
+        }
+
+        .slide.active,
+        .slide.visible {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 1;
+        }
+
+        /* 5. Keep media inside authored slide bounds */
+        img,
+        video,
+        canvas,
+        svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        /* 6. Presentation chrome stays outside the slide design system */
+        .deck-controls {
+            position: fixed;
+            left: 50%;
+            bottom: 22px;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        /* 7. Print one fixed-size slide per page */
+        @media print {
+            html,
+            body {
+                width: 1920px;
+                height: auto;
+                overflow: visible;
+                background: #fff;
+            }
+
+            .deck-viewport {
+                position: static;
+                overflow: visible;
+                background: #fff;
+            }
+
+            .deck-stage {
+                position: static;
+                width: auto;
+                height: auto;
+                transform: none !important;
+                background: none;
+            }
+
+            .slide {
+                position: relative;
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                pointer-events: auto !important;
+                width: 1920px;
+                height: 1080px;
+                break-after: page;
+                page-break-after: always;
+            }
+
+            .slide:last-child {
+                break-after: auto;
+                page-break-after: auto;
+            }
+
+            .deck-controls {
+                display: none !important;
+            }
+        }
+
+        /* 8. Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.2s !important;
+            }
+        }
+
+        /* ===========================================
+           GLOBAL SLIDE SURFACE
+           Industrial darkroom surface, grid, frame, and film grain.
+           =========================================== */
+        .slide {
+            font-family: var(--font-body);
+            color: var(--paper);
+            background:
+                linear-gradient(120deg, rgba(247,178,74,0.08) 0%, transparent 36%),
+                linear-gradient(300deg, rgba(116,240,178,0.08) 0%, transparent 34%),
+                linear-gradient(135deg, #080806 0%, #16120C 58%, #090907 100%);
+        }
+
+        .slide::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(239,229,210,0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(239,229,210,0.045) 1px, transparent 1px);
+            background-size: 80px 80px;
+            opacity: 0.62;
+        }
+
+        .slide::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
+            opacity: 0.24;
+            mix-blend-mode: soft-light;
+        }
+
+        .frame {
+            position: absolute;
+            inset: 52px;
+            border: 1px solid var(--line);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .hud {
+            position: absolute;
+            left: 92px;
+            right: 92px;
+            top: 72px;
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 18px;
+            letter-spacing: 0.08em;
+            color: var(--paper-dim);
+            z-index: 3;
+        }
+
+        .page-mark {
+            position: absolute;
+            right: 92px;
+            bottom: 72px;
+            font-family: var(--font-mono);
+            font-size: 18px;
+            letter-spacing: 0.08em;
+            color: rgba(239,229,210,0.44);
+            z-index: 4;
+        }
+
+        /* ===========================================
+           TYPOGRAPHY
+           Big, speaker-led text with compact support copy.
+           =========================================== */
+        .kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+            color: var(--green);
+            font-family: var(--font-mono);
+            font-size: 22px;
+            letter-spacing: 0.08em;
+            margin-bottom: 36px;
+            text-transform: uppercase;
+        }
+
+        .kicker::before {
+            content: "";
+            width: 14px;
+            height: 14px;
+            background: var(--green);
+            box-shadow: 0 0 24px rgba(116,240,178,0.76);
+        }
+
+        h1,
+        h2 {
+            font-family: var(--font-display);
+            font-weight: 900;
+            letter-spacing: 0;
+            color: var(--paper);
+        }
+
+        h1 {
+            font-size: 132px;
+            line-height: 1;
+            max-width: 1100px;
+        }
+
+        h2 {
+            font-size: 104px;
+            line-height: 1.06;
+            max-width: 1130px;
+        }
+
+        .subtitle {
+            margin-top: 42px;
+            max-width: 800px;
+            font-size: 35px;
+            line-height: 1.42;
+            color: var(--paper-dim);
+            font-weight: 500;
+        }
+
+        .big-word {
+            font-size: 150px;
+            line-height: 0.96;
+            max-width: 1280px;
+        }
+
+        .accent {
+            color: var(--amber);
+        }
+
+        .green {
+            color: var(--green);
+        }
+
+        .mono {
+            font-family: var(--font-mono);
+            letter-spacing: 0.06em;
+        }
+
+        /* ===========================================
+           LAYOUTS
+           Reusable fixed-stage slide systems.
+           =========================================== */
+        .content {
+            position: absolute;
+            left: 112px;
+            top: 162px;
+            width: 960px;
+            z-index: 4;
+        }
+
+        .content-wide {
+            position: absolute;
+            left: 112px;
+            top: 150px;
+            width: 1480px;
+            z-index: 4;
+        }
+
+        .statement {
+            position: absolute;
+            left: 112px;
+            top: 210px;
+            width: 1280px;
+            z-index: 4;
+        }
+
+        .bottom-note {
+            position: absolute;
+            left: 112px;
+            bottom: 118px;
+            font-family: var(--font-mono);
+            font-size: 24px;
+            letter-spacing: 0.06em;
+            color: var(--paper-dim);
+            z-index: 4;
+        }
+
+        .split {
+            position: absolute;
+            left: 112px;
+            top: 150px;
+            right: 112px;
+            bottom: 118px;
+            display: grid;
+            grid-template-columns: 0.98fr 1.02fr;
+            gap: 70px;
+            z-index: 4;
+        }
+
+        .split > div {
+            min-width: 0;
+        }
+
+        .panel {
+            border: 1px solid var(--line);
+            background: rgba(8,8,6,0.44);
+            box-shadow: inset 0 0 0 1px rgba(239,229,210,0.04);
+        }
+
+        .soft-panel {
+            border: 1px solid var(--line);
+            background:
+                linear-gradient(135deg, rgba(239,229,210,0.055), rgba(239,229,210,0.015));
+        }
+
+        /* ===========================================
+           VISUAL COMPONENTS
+           CSS-built product, library grid, workflow, and technical diagrams.
+           =========================================== */
+        .viewfinder {
+            position: absolute;
+            right: 112px;
+            top: 142px;
+            width: 640px;
+            height: 640px;
+            border: 1px solid rgba(239,229,210,0.34);
+            background:
+                linear-gradient(90deg, transparent 49.8%, rgba(239,229,210,0.18) 50%, transparent 50.2%),
+                linear-gradient(0deg, transparent 49.8%, rgba(239,229,210,0.18) 50%, transparent 50.2%);
+            z-index: 4;
+        }
+
+        .viewfinder .circle {
+            position: absolute;
+            inset: 76px;
+            border: 2px solid rgba(247,178,74,0.7);
+            border-radius: 50%;
+            box-shadow: 0 0 60px rgba(247,178,74,0.16);
+        }
+
+        .device {
+            position: absolute;
+            left: 209px;
+            top: 116px;
+            width: 222px;
+            height: 420px;
+            border-radius: 46px 46px 32px 32px;
+            background:
+                linear-gradient(135deg, rgba(239,229,210,0.95), rgba(247,178,74,0.94) 28%, rgba(112,61,30,0.94) 68%, rgba(8,8,6,0.95));
+            box-shadow:
+                0 42px 100px rgba(0,0,0,0.55),
+                inset 32px 0 70px rgba(255,255,255,0.24),
+                inset -24px 0 70px rgba(0,0,0,0.42);
+        }
+
+        .device::before {
+            content: "";
+            position: absolute;
+            left: 58px;
+            top: -54px;
+            width: 104px;
+            height: 72px;
+            border-radius: 18px 18px 8px 8px;
+            background: linear-gradient(180deg, #D7C6A5, #5F4329);
+        }
+
+        .device::after {
+            content: "AI CAM";
+            position: absolute;
+            left: 50%;
+            bottom: 84px;
+            transform: translateX(-50%);
+            font-family: var(--font-mono);
+            font-size: 26px;
+            letter-spacing: 0.05em;
+            color: rgba(8,8,6,0.78);
+            white-space: nowrap;
+        }
+
+        .scan {
+            position: absolute;
+            left: 42px;
+            right: 42px;
+            top: 386px;
+            height: 2px;
+            background: var(--green);
+            box-shadow: 0 0 30px rgba(116,240,178,0.8);
+        }
+
+        .library-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            width: 1480px;
+            margin-top: 42px;
+        }
+
+        .library-card {
+            min-height: 178px;
+            border: 1px solid var(--line);
+            background: rgba(8,8,6,0.42);
+            padding: 30px 30px 26px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .library-card::before {
+            content: attr(data-index);
+            position: absolute;
+            right: 24px;
+            top: 20px;
+            font-family: var(--font-mono);
+            font-size: 24px;
+            color: rgba(247,178,74,0.58);
+        }
+
+        .library-card strong {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 38px;
+            line-height: 1.1;
+            color: var(--paper);
+            margin-bottom: 18px;
+        }
+
+        .library-card span {
+            display: block;
+            font-size: 24px;
+            line-height: 1.35;
+            color: var(--paper-dim);
+        }
+
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .tag {
+            height: 64px;
+            display: inline-flex;
+            align-items: center;
+            padding: 0 24px;
+            border: 1px solid var(--line);
+            background: rgba(8,8,6,0.44);
+            font-family: var(--font-mono);
+            font-size: 22px;
+            letter-spacing: 0.03em;
+            color: var(--paper);
+        }
+
+        .asset-stack {
+            position: relative;
+            height: 600px;
+            margin-top: 22px;
+        }
+
+        .asset-block {
+            position: absolute;
+            width: 460px;
+            height: 148px;
+            border: 1px solid var(--line);
+            background: rgba(8,8,6,0.58);
+            padding: 26px 30px;
+        }
+
+        .asset-block:nth-child(1) { left: 0; top: 28px; }
+        .asset-block:nth-child(2) { left: 92px; top: 190px; }
+        .asset-block:nth-child(3) { left: 184px; top: 352px; }
+
+        .asset-block .num {
+            font-family: var(--font-mono);
+            color: var(--green);
+            font-size: 18px;
+            margin-bottom: 18px;
+        }
+
+        .asset-block .name {
+            font-size: 34px;
+            font-weight: 900;
+            color: var(--paper);
+        }
+
+        .flow-line {
+            position: absolute;
+            left: 104px;
+            right: 104px;
+            top: 514px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--amber), var(--green));
+            box-shadow: 0 0 28px rgba(116,240,178,0.36);
+            z-index: 4;
+        }
+
+        .flow-nodes {
+            position: absolute;
+            left: 104px;
+            right: 104px;
+            top: 400px;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 18px;
+            z-index: 5;
+        }
+
+        .flow-node {
+            min-height: 226px;
+            border: 1px solid var(--line);
+            background: rgba(8,8,6,0.72);
+            padding: 26px 18px;
+            text-align: center;
+        }
+
+        .flow-node .id {
+            font-family: var(--font-mono);
+            font-size: 18px;
+            color: var(--green);
+            margin-bottom: 30px;
+        }
+
+        .flow-node strong {
+            display: block;
+            font-size: 30px;
+            line-height: 1.2;
+        }
+
+        .matrix {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-top: 48px;
+            width: 1260px;
+        }
+
+        .matrix-cell {
+            min-height: 156px;
+            border: 1px solid var(--line);
+            padding: 26px;
+            background: rgba(8,8,6,0.48);
+        }
+
+        .matrix-cell .small {
+            font-family: var(--font-mono);
+            font-size: 17px;
+            color: var(--green);
+            margin-bottom: 20px;
+        }
+
+        .matrix-cell strong {
+            display: block;
+            font-size: 32px;
+            line-height: 1.18;
+        }
+
+        .camera-code {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 54px;
+            width: 1370px;
+        }
+
+        .camera-axis {
+            height: 224px;
+            border: 1px solid var(--line);
+            background: rgba(8,8,6,0.52);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 32px;
+        }
+
+        .camera-axis .axis {
+            font-family: var(--font-mono);
+            font-size: 54px;
+            color: var(--amber);
+            margin-bottom: 18px;
+        }
+
+        .camera-axis .meaning {
+            font-size: 30px;
+            line-height: 1.22;
+            color: var(--paper);
+        }
+
+        .demo-board {
+            position: absolute;
+            right: 112px;
+            top: 190px;
+            width: 720px;
+            height: 600px;
+            border: 1px solid var(--line);
+            background: rgba(8,8,6,0.58);
+            z-index: 4;
+            padding: 34px;
+        }
+
+        .demo-board .screen {
+            position: relative;
+            height: 370px;
+            border: 1px solid rgba(239,229,210,0.28);
+            background:
+                linear-gradient(90deg, rgba(239,229,210,0.06) 1px, transparent 1px),
+                linear-gradient(0deg, rgba(239,229,210,0.06) 1px, transparent 1px),
+                linear-gradient(135deg, rgba(247,178,74,0.11), rgba(116,240,178,0.06));
+            background-size: 54px 54px, 54px 54px, auto;
+            overflow: hidden;
+        }
+
+        .demo-board .screen::before {
+            content: "";
+            position: absolute;
+            width: 160px;
+            height: 300px;
+            left: 110px;
+            bottom: 0;
+            border: 1px solid rgba(239,229,210,0.42);
+            background: linear-gradient(180deg, rgba(239,229,210,0.1), rgba(239,229,210,0.02));
+        }
+
+        .demo-board .screen::after {
+            content: "";
+            position: absolute;
+            width: 172px;
+            height: 300px;
+            right: 104px;
+            bottom: 0;
+            background:
+                linear-gradient(180deg, rgba(116,240,178,0.18), rgba(247,178,74,0.08));
+            border: 1px solid rgba(116,240,178,0.34);
+        }
+
+        .demo-labels {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 22px;
+            font-family: var(--font-mono);
+            font-size: 18px;
+            color: var(--paper-dim);
+        }
+
+        .output-strip {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-top: 48px;
+        }
+
+        .output-card {
+            min-height: 194px;
+            border: 1px solid var(--line);
+            background: rgba(8,8,6,0.52);
+            padding: 28px;
+        }
+
+        .output-card .count {
+            font-family: var(--font-mono);
+            color: var(--amber);
+            font-size: 44px;
+            margin-bottom: 20px;
+        }
+
+        .output-card strong {
+            display: block;
+            font-size: 32px;
+            line-height: 1.18;
+        }
+
+        /* ===========================================
+           ANIMATIONS
+           Cinematic fade, blur, and staged reveal.
+           =========================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(34px);
+            filter: blur(8px);
+            transition:
+                opacity 0.85s var(--ease),
+                transform 0.85s var(--ease),
+                filter 0.85s var(--ease);
+        }
+
+        .visible .reveal {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
+
+        .visible .reveal:nth-child(2) { transition-delay: 0.08s; }
+        .visible .reveal:nth-child(3) { transition-delay: 0.16s; }
+        .visible .reveal:nth-child(4) { transition-delay: 0.24s; }
+        .visible .reveal:nth-child(5) { transition-delay: 0.32s; }
+        .visible .reveal:nth-child(6) { transition-delay: 0.40s; }
+
+        /* ===========================================
+           OUTSIDE-STAGE CONTROLS
+           Navigation progress and inline editing affordance.
+           =========================================== */
+        .deck-controls {
+            color: rgba(239,229,210,0.58);
+            font-family: var(--font-mono);
+            font-size: 13px;
+            letter-spacing: 0.08em;
+            background: rgba(8,8,6,0.68);
+            border: 1px solid rgba(239,229,210,0.14);
+            padding: 9px 14px;
+        }
+
+        .edit-hotzone {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 80px;
+            height: 80px;
+            z-index: 10000;
+            cursor: pointer;
+        }
+
+        .edit-toggle {
+            position: fixed;
+            top: 18px;
+            left: 18px;
+            z-index: 10001;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            border: 1px solid rgba(239,229,210,0.22);
+            background: rgba(8,8,6,0.82);
+            color: var(--paper);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            padding: 9px 12px;
+        }
+
+        .edit-toggle.show,
+        .edit-toggle.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        body.editing [data-editable] {
+            outline: 2px dashed rgba(116,240,178,0.72);
+            outline-offset: 6px;
+            cursor: text;
+        }
+
+        .edit-status {
+            position: fixed;
+            top: 18px;
+            left: 92px;
+            z-index: 10001;
+            opacity: 0;
+            pointer-events: none;
+            border: 1px solid rgba(116,240,178,0.26);
+            background: rgba(8,8,6,0.82);
+            color: var(--green);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            padding: 9px 12px;
+            transition: opacity 0.25s ease;
+        }
+
+        .edit-status.show {
+            opacity: 1;
+        }
+
+        /* ===========================================
+           STYLE A OVERRIDES: BLUEPRINT CONSULTING
+           White/blue split-screen system based on the selected Style A preview.
+           These rules intentionally override the dark workshop theme above.
+           =========================================== */
+        :root {
+            --stage-bg: #050607;
+            --slide-bg: #ffffff;
+            --paper: #080A0F;
+            --paper-dim: #647083;
+            --paper-faint: rgba(8,10,15,0.1);
+            --line: rgba(8,10,15,0.12);
+            --amber: #195BFF;
+            --amber-soft: rgba(25,91,255,0.10);
+            --green: #195BFF;
+            --green-soft: rgba(25,91,255,0.09);
+            --red: #E74334;
+            --black: #080A0F;
+            --font-display: "Noto Sans SC", "Manrope", sans-serif;
+            --font-body: "Manrope", "Noto Sans SC", sans-serif;
+            --font-mono: "IBM Plex Mono", monospace;
+        }
+
+        .slide {
+            color: var(--paper);
+            background:
+                linear-gradient(90deg, #FFFFFF 0 51.6%, #195BFF 51.6% 100%);
+            font-family: var(--font-body);
+        }
+
+        .slide:not(:first-child) {
+            background: #FFFFFF;
+        }
+
+        .slide::before {
+            background-image: none;
+            opacity: 0;
+        }
+
+        .slide::after {
+            background-image: none;
+            opacity: 0;
+        }
+
+        .frame {
+            inset: 54px;
+            border-color: rgba(8,10,15,0.14);
+        }
+
+        .slide:first-child .frame,
+        .slide:first-child .hud div:last-child,
+        .slide:first-child .page-mark {
+            border-color: rgba(255,255,255,0.34);
+            color: rgba(255,255,255,0.76);
+        }
+
+        .hud {
+            color: rgba(8,10,15,0.56);
+            font-family: var(--font-mono);
+            font-weight: 600;
+        }
+
+        .hud div:last-child {
+            color: rgba(8,10,15,0.5);
+        }
+
+        .kicker {
+            color: var(--amber);
+            font-family: var(--font-body);
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: none;
+        }
+
+        .kicker::before {
+            width: 12px;
+            height: 76px;
+            background: var(--amber);
+            box-shadow: none;
+        }
+
+        h1,
+        h2 {
+            color: var(--paper);
+            font-family: var(--font-display);
+            font-weight: 900;
+        }
+
+        h1 {
+            font-size: 136px;
+            line-height: 0.98;
+        }
+
+        h2 {
+            font-size: 104px;
+            line-height: 1.05;
+        }
+
+        .big-word {
+            font-size: 142px;
+            line-height: 0.98;
+        }
+
+        .subtitle {
+            color: var(--paper-dim);
+            font-family: var(--font-body);
+            font-size: 36px;
+            font-weight: 600;
+            line-height: 1.34;
+        }
+
+        .cover-author {
+            margin-top: 28px;
+            color: rgba(8,10,15,0.46);
+            font-family: var(--font-body);
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+
+        .content,
+        .content-wide,
+        .statement {
+            top: 158px;
+        }
+
+        .bottom-note {
+            color: rgba(8,10,15,0.58);
+        }
+
+        .tag,
+        .library-card,
+        .matrix-cell,
+        .output-card,
+        .flow-node,
+        .camera-axis,
+        .soft-panel,
+        .panel,
+        .demo-board,
+        .asset-block {
+            background: rgba(255,255,255,0.78);
+            border: 2px solid rgba(8,10,15,0.14);
+            box-shadow: none;
+        }
+
+        .library-card::before {
+            color: var(--amber);
+            font-weight: 800;
+        }
+
+        .library-card strong,
+        .matrix-cell strong,
+        .output-card strong,
+        .flow-node strong,
+        .asset-block .name,
+        .camera-axis .meaning {
+            color: var(--paper);
+        }
+
+        .library-card span {
+            color: var(--paper-dim);
+            font-weight: 600;
+        }
+
+        .tag {
+            color: var(--paper);
+            font-family: var(--font-body);
+            font-weight: 800;
+            letter-spacing: 0;
+        }
+
+        .matrix-cell .small,
+        .flow-node .id,
+        .asset-block .num {
+            color: var(--amber);
+            font-weight: 800;
+        }
+
+        .output-card .count,
+        .camera-axis .axis {
+            color: var(--amber);
+            font-weight: 800;
+        }
+
+        .flow-line {
+            background: var(--amber);
+            box-shadow: none;
+        }
+
+        .slide:first-child > .flow-line {
+            display: none;
+        }
+
+        .viewfinder {
+            border-color: rgba(255,255,255,0.5);
+            background:
+                linear-gradient(90deg, transparent 49.8%, rgba(255,255,255,0.24) 50%, transparent 50.2%),
+                linear-gradient(0deg, transparent 49.8%, rgba(255,255,255,0.24) 50%, transparent 50.2%);
+        }
+
+        .viewfinder .circle {
+            border-color: rgba(255,255,255,0.78);
+            box-shadow: none;
+        }
+
+        .device {
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.98), rgba(206,223,255,0.98) 26%, rgba(25,91,255,0.88) 66%, rgba(7,25,87,0.95));
+            box-shadow:
+                0 44px 100px rgba(5,26,110,0.36),
+                inset 32px 0 70px rgba(255,255,255,0.35),
+                inset -24px 0 70px rgba(7,25,87,0.44);
+        }
+
+        .device::before {
+            background: linear-gradient(180deg, #F4F7FF, #6F8EEB);
+        }
+
+        .scan {
+            background: #FFFFFF;
+            box-shadow: none;
+        }
+
+        .demo-board .screen {
+            background:
+                linear-gradient(90deg, rgba(25,91,255,0.08) 1px, transparent 1px),
+                linear-gradient(0deg, rgba(25,91,255,0.08) 1px, transparent 1px),
+                linear-gradient(135deg, rgba(25,91,255,0.08), rgba(25,91,255,0.02));
+            border-color: rgba(8,10,15,0.16);
+        }
+
+        .demo-board .screen::before {
+            border-color: rgba(8,10,15,0.28);
+            background: rgba(8,10,15,0.04);
+        }
+
+        .demo-board .screen::after {
+            border-color: rgba(25,91,255,0.46);
+            background: rgba(25,91,255,0.16);
+        }
+
+        .demo-labels {
+            color: rgba(8,10,15,0.55);
+            font-weight: 700;
+        }
+
+        .page-mark {
+            color: rgba(8,10,15,0.48);
+        }
+
+        .deck-controls {
+            background: rgba(255,255,255,0.92);
+            border-color: rgba(8,10,15,0.16);
+            color: rgba(8,10,15,0.7);
+        }
+
+        .edit-toggle,
+        .edit-status {
+            background: rgba(255,255,255,0.94);
+            border-color: rgba(8,10,15,0.18);
+            color: var(--paper);
+        }
+
+        .agenda-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px;
+            width: 1260px;
+            margin-top: 54px;
+        }
+
+        .agenda-card {
+            min-height: 172px;
+            border: 2px solid rgba(8,10,15,0.14);
+            background: rgba(255,255,255,0.86);
+            padding: 32px;
+        }
+
+        .agenda-card .num {
+            font-family: var(--font-mono);
+            font-size: 22px;
+            color: var(--amber);
+            font-weight: 800;
+            margin-bottom: 24px;
+        }
+
+        .agenda-card strong {
+            display: block;
+            font-size: 34px;
+            line-height: 1.18;
+            color: var(--paper);
+        }
+
+        .agenda-card span {
+            display: block;
+            margin-top: 12px;
+            font-size: 22px;
+            line-height: 1.3;
+            color: var(--paper-dim);
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="deck-viewport">
+        <main class="deck-stage" id="deckStage">
+            <section class="slide active visible" data-slide-title="AI视频内容引擎">
+                <div class="frame"></div>
+                <div class="hud"><div>AI VIDEO CONTENT ENGINE</div><div>SIX LIBRARIES / ONE WORKFLOW</div></div>
+                <div class="content">
+                    <div class="kicker reveal">企业营销素材系统</div>
+                    <h1 class="reveal" data-editable data-edit-id="s01-title">AI视频<br>内容引擎</h1>
+                    <p class="subtitle reveal" data-editable data-edit-id="s01-subtitle">企业营销素材的多模态生成工作流</p>
+                    <p class="cover-author reveal" data-editable data-edit-id="s01-author">作者：hoody</p>
+                </div>
+                <div class="viewfinder reveal">
+                    <div class="circle"></div>
+                    <div class="device"></div>
+                    <div class="scan"></div>
+                </div>
+                <div class="flow-line reveal"></div>
+                <div class="page-mark">01 / 22</div>
+            </section>
+
+            <section class="slide" data-slide-title="目录">
+                <div class="frame"></div>
+                <div class="hud"><div>AGENDA</div><div>30 MINUTES</div></div>
+                <div class="content-wide">
+                    <div class="kicker reveal">目录</div>
+                    <h2 class="reveal" data-editable data-edit-id="s02-title">今天讲四件事</h2>
+                    <div class="agenda-grid reveal">
+                        <div class="agenda-card"><div class="num">01</div><strong>重新定义问题</strong><span>企业缺的不是 AI 工具</span></div>
+                        <div class="agenda-card"><div class="num">02</div><strong>企业六个库</strong><span>把能力沉淀成资产</span></div>
+                        <div class="agenda-card"><div class="num">03</div><strong>参考视频 demo</strong><span>用两个模特视频说明参考</span></div>
+                        <div class="agenda-card"><div class="num">04</div><strong>workflow 复盘</strong><span>从输入走到成片</span></div>
+                    </div>
+                </div>
+                <div class="page-mark">02 / 22</div>
+            </section>
+
+            <section class="slide" data-slide-title="为什么学了工具还是出不了片">
+                <div class="frame"></div>
+                <div class="hud"><div>BOTTLENECK</div><div>NO ASSET SYSTEM</div></div>
+                <div class="content-wide">
+                    <div class="kicker reveal">常见卡点</div>
+                    <h2 class="reveal" data-editable data-edit-id="s03-title">为什么学了工具<br>还是出不了片</h2>
+                    <p class="subtitle reveal" data-editable data-edit-id="s03-subtitle">因为没有库,每次都从零开始抽卡。</p>
+                    <div class="tag-row reveal">
+                        <div class="tag">素材散</div>
+                        <div class="tag">参考乱</div>
+                        <div class="tag">分镜空</div>
+                        <div class="tag">提示词靠猜</div>
+                        <div class="tag">剪辑没人接</div>
+                    </div>
+                </div>
+                <div class="page-mark">03 / 22</div>
+            </section>
+
+            <section class="slide" data-slide-title="六个库协同生产">
+                <div class="frame"></div>
+                <div class="hud"><div>REFRAME</div><div>PROMPT IS ONLY ONE LAYER</div></div>
+                <div class="statement">
+                    <div class="kicker reveal">核心判断</div>
+                    <h2 class="big-word reveal" data-editable data-edit-id="s04-title">高质量 AI 视频<br>不是<span class="accent">提示词</span></h2>
+                    <p class="subtitle reveal" data-editable data-edit-id="s04-subtitle">是六个库协同生产。</p>
+                </div>
+                <div class="page-mark">04 / 22</div>
+            </section>
+
+            <section class="slide" data-slide-title="企业 AI 视频内容引擎">
+                <div class="frame"></div>
+                <div class="hud"><div>CORE MAP</div><div>SIX LIBRARIES</div></div>
+                <div class="content-wide">
+                    <div class="kicker reveal">内容引擎地图</div>
+                    <h2 class="reveal" data-editable data-edit-id="s05-title">企业 AI 视频内容引擎<br>= 六个库</h2>
+                    <div class="library-grid reveal">
+                        <div class="library-card" data-index="01"><strong>产品素材库</strong><span>锁定卖什么</span></div>
+                        <div class="library-card" data-index="02"><strong>参考视频库</strong><span>锁定怎么表达</span></div>
+                        <div class="library-card" data-index="03"><strong>角色场景库</strong><span>锁定谁来讲、在哪里讲</span></div>
+                        <div class="library-card" data-index="04"><strong>分镜脚本库</strong><span>锁定按什么顺序讲</span></div>
+                        <div class="library-card" data-index="05"><strong>生成提示词库</strong><span>锁定怎么让模型执行</span></div>
+                        <div class="library-card" data-index="06"><strong>剪辑发布库</strong><span>锁定怎么变成可投放素材</span></div>
+                    </div>
+                </div>
+                <div class="page-mark">05 / 22</div>
+            </section>
+
+            <section class="slide" data-slide-title="AI视频模型最强的不是生成是参考">
+                <div class="frame"></div>
+                <div class="hud"><div>REFERENCE FIRST</div><div>TWO MODEL VIDEOS</div></div>
+                <div class="content">
+                    <div class="kicker reveal">参考优先</div>
+                    <h2 class="reveal" data-editable data-edit-id="s06-title">AI视频模型最强的<br>不是生成，是参考</h2>
+                    <p class="subtitle reveal" data-editable data-edit-id="s06-subtitle">用参考视频锁定动作、姿态、节奏和镜头。</p>
+                </div>
+                <div class="demo-board reveal">
+                    <div class="screen"></div>
+                    <div class="demo-labels">
+                        <div>MODEL VIDEO / 01</div>
+                        <div>MODEL VIDEO / 02</div>
+                    </div>
+                    <div class="tag-row" style="margin-top: 28px;">
+                        <div class="tag" style="height: 52px; font-size: 17px;">动作参考</div>
+                        <div class="tag" style="height: 52px; font-size: 17px;">姿态参考</div>
+                        <div class="tag" style="height: 52px; font-size: 17px;">镜头节奏</div>
+                    </div>
+                </div>
+                <div class="page-mark">06 / 22</div>
+            </section>
+
+            <section class="slide" data-slide-title="库一产品素材库">
+                <div class="frame"></div>
+                <div class="hud"><div>LIBRARY 01</div><div>PRODUCT ASSETS</div></div>
+                <div class="split">
+                    <div>
+                        <div class="kicker reveal">库一</div>
+                        <h2 class="reveal" data-editable data-edit-id="s07-title">产品素材库</h2>
+                        <p class="subtitle reveal" data-editable data-edit-id="s07-subtitle">先把产品讲清楚,AI 才知道该突出什么。</p>
+                    </div>
+                    <div class="asset-stack reveal">
+                        <div class="asset-block"><div class="num">PRODUCT IMAGE</div><div class="name">产品图</div></div>
+                        <div class="asset-block"><div class="num">SELLING POINT</div><div class="name">卖点 / 参数</div></div>
+                        <div class="asset-block"><div class="num">USE SCENE</div><div class="name">人群 / 场景</div></div>
+                    </div>
+                </div>
+                <div class="page-mark">07 / 22</div>
+            </section>
+
+            <section class="slide" data-slide-title="产品素材库怎么建">
+                <div class="frame"></div>
+                <div class="hud"><div>LIBRARY 01 METHOD</div><div>FROM FILES TO STRUCTURE</div></div>
+                <div class="statement">
+                    <div class="kicker reveal">建设方法</div>
+                    <h2 class="big-word reveal" data-editable data-edit-id="s08-title">产品素材库<br>怎么建</h2>
+                    <p class="subtitle reveal" data-editable data-edit-id="s08-subtitle">产品图、卖点、人群、场景、竞品差异。</p>
+                </div>
+                <div class="page-mark">08 / 22</div>
+            </section>
+
+            <section class="slide" data-slide-title="库二参考视频库">
+                <div class="frame"></div>
+                <div class="hud"><div>LIBRARY 02</div><div>REFERENCE VIDEOS</div></div>
+                <div class="content-wide">
+                    <div class="kicker reveal">库二</div>
+                    <h2 class="reveal" data-editable data-edit-id="s09-title">参考视频库</h2>
+                    <p class="subtitle reveal" data-editable data-edit-id="s09-subtitle">不是抄爆款,是复用被验证过的表达结构。</p>
+                    <div class="matrix reveal">
+                        <div class="matrix-cell"><div class="small">MOTION</div><strong>动作</strong></div>
+                        <div class="matrix-cell"><div class="small">CAMERA</div><strong>运镜</strong></div>
+                        <div class="matrix-cell"><div class="small">RHYTHM</div><strong>节奏</strong></div>
+                        <div class="matrix-cell"><div class="small">TRANSITION</div><strong>转场</strong></div>
+                    </div>
+                </div>
+                <div class="page-mark">09 / 22</div>
+            </section>
+
+            <section class="slide" data-slide-title="参考视频库怎么用">
+                <div class="frame"></div>
+                <div class="hud"><div>LIBRARY 02 METHOD</div><div>REFERENCE WITH BOUNDARIES</div></div>
+                <div class="statement">
+                    <div class="kicker reveal">使用方法</div>
+                    <h2 class="big-word reveal" data-editable data-edit-id="s10-title">参考视频库<br>怎么用</h2>
+                    <p class="subtitle reveal" data-editable data-edit-id="s10-subtitle">借动作、借运镜、借节奏,不借品牌。</p>
+                </div>
+                <div class="page-mark">10 / 22</div>
+            </section>
+
+            <section class="slide" data-slide-title="库三角色场景库">
+                <div class="frame"></div>
+                <div class="hud"><div>LIBRARY 03</div><div>CHARACTERS / SCENES</div></div>
+                <div class="split">
+                    <div>
+                        <div class="kicker reveal">库三</div>
+                        <h2 class="reveal" data-editable data-edit-id="s11-title">角色场景库</h2>
+                        <p class="subtitle reveal" data-editable data-edit-id="s11-subtitle">让视频有稳定的“人”和“场”。</p>
+                    </div>
+                    <div class="soft-panel reveal" style="padding: 44px;">
+                        <div class="library-grid" style="grid-template-columns: 1fr 1fr; width: 100%; margin-top: 0;">
+                            <div class="library-card" data-index="A"><strong>虚拟代言人</strong><span>稳定讲产品</span></div>
+                            <div class="library-card" data-index="B"><strong>品牌主播</strong><span>稳定做切片</span></div>
+                            <div class="library-card" data-index="C"><strong>办公场景</strong><span>适合 ToB</span></div>
+                            <div class="library-card" data-index="D"><strong>直播间</strong><span>适合电商</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-mark">11 / 22</div>
+            </section>
+
+            <section class="slide" data-slide-title="虚拟代言人不是换脸噱头">
+                <div class="frame"></div>
+                <div class="hud"><div>AVATAR POSITIONING</div><div>BRAND ASSET</div></div>
+                <div class="statement">
+                    <div class="kicker reveal">角色资产</div>
+                    <h2 class="big-word reveal" data-editable data-edit-id="s12-title">虚拟代言人<br>不是<span class="accent">换脸噱头</span></h2>
+                    <p class="subtitle reveal" data-editable data-edit-id="s12-subtitle">它是品牌可复用的视频表达资产。</p>
+                </div>
+                <div class="page-mark">12 / 22</div>
+            </section>
+
+            <section class="slide" data-slide-title="库四分镜脚本库">
+                <div class="frame"></div>
+                <div class="hud"><div>LIBRARY 04</div><div>STORYBOARD / SCRIPT</div></div>
+                <div class="content-wide">
+                    <div class="kicker reveal">库四</div>
+                    <h2 class="reveal" data-editable data-edit-id="s13-title">分镜脚本库</h2>
+                    <p class="subtitle reveal" data-editable data-edit-id="s13-subtitle">把卖点拆成镜头,而不是只拆成文案。</p>
+                    <div class="matrix reveal">
+                        <div class="matrix-cell"><div class="small">01</div><strong>痛点</strong></div>
+                        <div class="matrix-cell"><div class="small">02</div><strong>产品出现</strong></div>
+                        <div class="matrix-cell"><div class="small">03</div><strong>使用过程</strong></div>
+                        <div class="matrix-cell"><div class="small">04</div><strong>结果展示</strong></div>
+                    </div>
+                </div>
+                <div class="page-mark">13 / 22</div>
+            </section>
+
+            <section class="slide" data-slide-title="一个卖点如何变成 4 个镜头">
+                <div class="frame"></div>
+                <div class="hud"><div>STORYBOARD METHOD</div><div>ONE CLAIM / FOUR SHOTS</div></div>
+                <div class="content-wide">
+                    <div class="kicker reveal">镜头模板</div>
+                    <h2 class="reveal" data-editable data-edit-id="s14-title">一个卖点如何<br>变成 4 个镜头</h2>
+                    <div class="flow-line reveal" style="position: relative; left: 0; right: auto; top: auto; width: 1260px; margin-top: 56px;"></div>
+                    <div class="flow-nodes reveal" style="position: relative; left: 0; right: auto; top: 16px; grid-template-columns: repeat(4, 1fr); width: 1260px;">
+                        <div class="flow-node"><div class="id">01</div><strong>痛点</strong></div>
+                        <div class="flow-node"><div class="id">02</div><strong>产品出现</strong></div>
+                        <div class="flow-node"><div class="id">03</div><strong>使用过程</strong></div>
+                        <div class="flow-node"><div class="id">04</div><strong>结果展示</strong></div>
+                    </div>
+                </div>
+                <div class="page-mark">14 / 22</div>
+            </section>
+
+            <section class="slide" data-slide-title="库五生成提示词库">
+                <div class="frame"></div>
+                <div class="hud"><div>LIBRARY 05</div><div>PROMPT MODULES</div></div>
+                <div class="statement">
+                    <div class="kicker reveal">库五</div>
+                    <h2 class="big-word reveal" data-editable data-edit-id="s15-title">提示词不是一句话</h2>
+                    <p class="subtitle reveal" data-editable data-edit-id="s15-subtitle">是可组合模块:主体、动作、镜头、光影、材质、约束。</p>
+                </div>
+                <div class="page-mark">15 / 22</div>
+            </section>
+
+            <section class="slide" data-slide-title="技术感放在这里讲">
+                <div class="frame"></div>
+                <div class="hud"><div>TECHNICAL CORE</div><div>CONTROL VARIABLES</div></div>
+                <div class="content-wide">
+                    <div class="kicker reveal">技术感放在这里</div>
+                    <h2 class="reveal" data-editable data-edit-id="s16-title">技术感放在<br>这里讲</h2>
+                    <div class="matrix reveal">
+                        <div class="matrix-cell"><div class="small">CAMERA</div><strong>镜头坐标</strong></div>
+                        <div class="matrix-cell"><div class="small">MOTION</div><strong>运镜限制</strong></div>
+                        <div class="matrix-cell"><div class="small">TEXTURE</div><strong>光影材质</strong></div>
+                        <div class="matrix-cell"><div class="small">NEGATIVE</div><strong>负面约束</strong></div>
+                    </div>
+                </div>
+                <div class="page-mark">16 / 22</div>
+            </section>
+
+            <section class="slide" data-slide-title="库六剪辑发布库">
+                <div class="frame"></div>
+                <div class="hud"><div>LIBRARY 06</div><div>EDITING / PUBLISHING</div></div>
+                <div class="statement">
+                    <div class="kicker reveal">库六</div>
+                    <h2 class="big-word reveal" data-editable data-edit-id="s17-title">库六:<br>剪辑发布库</h2>
+                    <p class="subtitle reveal" data-editable data-edit-id="s17-subtitle">AI 生成只是半成品,剪辑才决定能不能投放。</p>
+                </div>
+                <div class="page-mark">17 / 22</div>
+            </section>
+
+            <section class="slide" data-slide-title="同一条素材如何变成多平台版本">
+                <div class="frame"></div>
+                <div class="hud"><div>PUBLISHING METHOD</div><div>ONE ASSET / MULTIPLE CUTS</div></div>
+                <div class="content-wide">
+                    <div class="kicker reveal">发布复用</div>
+                    <h2 class="reveal" data-editable data-edit-id="s18-title">同一条素材如何<br>变成多平台版本</h2>
+                    <div class="output-strip reveal">
+                        <div class="output-card"><div class="count">01</div><strong>广告片</strong></div>
+                        <div class="output-card"><div class="count">02</div><strong>种草</strong></div>
+                        <div class="output-card"><div class="count">03</div><strong>直播切片</strong></div>
+                        <div class="output-card"><div class="count">04</div><strong>信息流短视频</strong></div>
+                    </div>
+                </div>
+                <div class="page-mark">18 / 22</div>
+            </section>
+
+            <section class="slide" data-slide-title="完整 workflow 复盘">
+                <div class="frame"></div>
+                <div class="hud"><div>WORKFLOW REVIEW</div><div>INPUT TO FINAL CUT</div></div>
+                <div class="content-wide">
+                    <div class="kicker reveal">完整 workflow 复盘</div>
+                    <h2 class="reveal" data-editable data-edit-id="s19-title">六个库如何<br>从输入走到成片</h2>
+                </div>
+                <div class="flow-line reveal" style="top: 650px;"></div>
+                <div class="flow-nodes reveal" style="top: 538px;">
+                    <div class="flow-node"><div class="id">01</div><strong>产品<br>素材</strong></div>
+                    <div class="flow-node"><div class="id">02</div><strong>参考<br>视频</strong></div>
+                    <div class="flow-node"><div class="id">03</div><strong>角色<br>场景</strong></div>
+                    <div class="flow-node"><div class="id">04</div><strong>分镜<br>脚本</strong></div>
+                    <div class="flow-node"><div class="id">05</div><strong>生成<br>提示词</strong></div>
+                    <div class="flow-node"><div class="id">06</div><strong>剪辑<br>发布</strong></div>
+                </div>
+                <div class="page-mark">19 / 22</div>
+            </section>
+
+            <section class="slide" data-slide-title="企业真正要沉淀的不是作品">
+                <div class="frame"></div>
+                <div class="hud"><div>BUSINESS LANDING</div><div>REUSABLE VIDEO ASSETS</div></div>
+                <div class="statement">
+                    <div class="kicker reveal">落地形态</div>
+                    <h2 class="big-word reveal" data-editable data-edit-id="s20-title">企业真正要沉淀的<br>不是作品</h2>
+                    <p class="subtitle reveal" data-editable data-edit-id="s20-subtitle">是可复用的视频生产资产。</p>
+                </div>
+                <div class="page-mark">20 / 22</div>
+            </section>
+
+            <section class="slide" data-slide-title="今天的核心结论">
+                <div class="frame"></div>
+                <div class="hud"><div>SUMMARY</div><div>KEY TAKEAWAYS</div></div>
+                <div class="content-wide">
+                    <div class="kicker reveal">总结</div>
+                    <h2 class="reveal" data-editable data-edit-id="s21-title">今天的核心结论</h2>
+                    <div class="output-strip reveal">
+                        <div class="output-card"><div class="count">01</div><strong>不是工具</strong></div>
+                        <div class="output-card"><div class="count">02</div><strong>不是提示词</strong></div>
+                        <div class="output-card"><div class="count">03</div><strong>不是作品</strong></div>
+                        <div class="output-card"><div class="count">04</div><strong>不是一次性</strong></div>
+                    </div>
+                </div>
+                <div class="page-mark">21 / 22</div>
+            </section>
+
+            <section class="slide" data-slide-title="未来不是会不会用 AI">
+                <div class="frame"></div>
+                <div class="hud"><div>CLOSING</div><div>CONTENT ENGINE</div></div>
+                <div class="statement">
+                    <div class="kicker reveal">最后一句</div>
+                    <h2 class="big-word reveal" data-editable data-edit-id="s22-title">未来不是<br>会不会用 AI</h2>
+                    <p class="subtitle reveal" data-editable data-edit-id="s22-subtitle">是你的企业有没有一台内容引擎。</p>
+                </div>
+                <div class="bottom-note reveal">把一次出片,变成持续生产。</div>
+                <div class="page-mark">22 / 22</div>
+            </section>
+        </main>
+    </div>
+
+    <div class="deck-controls" id="deckControls" aria-live="polite">01 / 22</div>
+    <div class="edit-hotzone" aria-hidden="true"></div>
+    <button class="edit-toggle" id="editToggle" type="button" title="Edit mode (E)">EDIT</button>
+    <div class="edit-status" id="editStatus">EDIT MODE</div>
+
+    <script>
+        /* ===========================================
+           SLIDE PRESENTATION CONTROLLER
+           Handles fixed-stage scaling plus keyboard, wheel, and touch navigation.
+           =========================================== */
+        class SlidePresentation {
+            constructor() {
+                this.slides = Array.from(document.querySelectorAll('.slide'));
+                this.currentSlide = 0;
+                this.stage = document.getElementById('deckStage');
+                this.controls = document.getElementById('deckControls');
+                this.lastWheelTime = 0;
+                this.touchStartX = 0;
+                this.touchStartY = 0;
+                this.setupStageScale();
+                this.setupKeyboardNav();
+                this.setupWheelNav();
+                this.setupTouchNav();
+                this.showSlide(0);
+            }
+
+            setupStageScale() {
+                const scale = () => {
+                    const factor = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+                    const x = (window.innerWidth - 1920 * factor) / 2;
+                    const y = (window.innerHeight - 1080 * factor) / 2;
+                    this.stage.style.transform = `translate(${x}px, ${y}px) scale(${factor})`;
+                };
+                scale();
+                window.addEventListener('resize', scale);
+            }
+
+            setupKeyboardNav() {
+                document.addEventListener('keydown', (event) => {
+                    if (event.target && event.target.getAttribute('contenteditable') === 'true') return;
+                    const forward = ['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'];
+                    const backward = ['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'];
+                    if (forward.includes(event.key)) {
+                        event.preventDefault();
+                        this.next();
+                    }
+                    if (backward.includes(event.key)) {
+                        event.preventDefault();
+                        this.prev();
+                    }
+                    if (event.key === 'Home') {
+                        event.preventDefault();
+                        this.showSlide(0);
+                    }
+                    if (event.key === 'End') {
+                        event.preventDefault();
+                        this.showSlide(this.slides.length - 1);
+                    }
+                });
+            }
+
+            setupWheelNav() {
+                window.addEventListener('wheel', (event) => {
+                    const now = Date.now();
+                    if (now - this.lastWheelTime < 640) return;
+                    if (Math.abs(event.deltaY) < 36) return;
+                    this.lastWheelTime = now;
+                    if (event.deltaY > 0) this.next();
+                    else this.prev();
+                }, { passive: true });
+            }
+
+            setupTouchNav() {
+                window.addEventListener('touchstart', (event) => {
+                    const touch = event.changedTouches[0];
+                    this.touchStartX = touch.clientX;
+                    this.touchStartY = touch.clientY;
+                }, { passive: true });
+
+                window.addEventListener('touchend', (event) => {
+                    const touch = event.changedTouches[0];
+                    const dx = touch.clientX - this.touchStartX;
+                    const dy = touch.clientY - this.touchStartY;
+                    if (Math.abs(dx) < 44 && Math.abs(dy) < 44) {
+                        this.next();
+                        return;
+                    }
+                    if (Math.abs(dx) > Math.abs(dy)) {
+                        if (dx < -44) this.next();
+                        if (dx > 44) this.prev();
+                    } else {
+                        if (dy < -44) this.next();
+                        if (dy > 44) this.prev();
+                    }
+                }, { passive: true });
+            }
+
+            showSlide(index) {
+                this.currentSlide = Math.max(0, Math.min(index, this.slides.length - 1));
+                this.slides.forEach((slide, slideIndex) => {
+                    const visible = slideIndex === this.currentSlide;
+                    slide.classList.toggle('active', visible);
+                    slide.classList.toggle('visible', visible);
+                });
+                const current = String(this.currentSlide + 1).padStart(2, '0');
+                const total = String(this.slides.length).padStart(2, '0');
+                this.controls.textContent = `${current} / ${total}`;
+            }
+
+            next() {
+                this.showSlide(this.currentSlide + 1);
+            }
+
+            prev() {
+                this.showSlide(this.currentSlide - 1);
+            }
+        }
+
+        /* ===========================================
+           INLINE EDITOR
+           Toggle with the hidden EDIT button or E key. Text saves to localStorage.
+           Ctrl+S downloads the edited HTML snapshot.
+           =========================================== */
+        class InlineEditor {
+            constructor() {
+                this.isActive = false;
+                this.key = 'ai-video-content-engine-style-a-v2-edits';
+                this.editables = Array.from(document.querySelectorAll('[data-editable]'));
+                this.button = document.getElementById('editToggle');
+                this.status = document.getElementById('editStatus');
+                this.load();
+                this.setupEvents();
+            }
+
+            setupEvents() {
+                this.button.addEventListener('click', () => this.toggleEditMode());
+                this.editables.forEach((element) => {
+                    element.addEventListener('input', () => this.save());
+                    element.addEventListener('blur', () => this.save());
+                });
+
+                document.addEventListener('keydown', (event) => {
+                    const editingText = event.target && event.target.getAttribute('contenteditable') === 'true';
+                    if ((event.key === 'e' || event.key === 'E') && !editingText) {
+                        event.preventDefault();
+                        this.toggleEditMode();
+                    }
+                    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 's') {
+                        event.preventDefault();
+                        this.save();
+                        if (this.isActive) this.downloadSnapshot();
+                    }
+                });
+            }
+
+            toggleEditMode() {
+                this.isActive = !this.isActive;
+                document.body.classList.toggle('editing', this.isActive);
+                this.button.classList.toggle('active', this.isActive);
+                this.status.classList.toggle('show', this.isActive);
+                this.editables.forEach((element) => {
+                    element.setAttribute('contenteditable', this.isActive ? 'true' : 'false');
+                    element.setAttribute('spellcheck', 'false');
+                });
+            }
+
+            load() {
+                try {
+                    const saved = JSON.parse(localStorage.getItem(this.key) || '{}');
+                    this.editables.forEach((element) => {
+                        const id = element.dataset.editId;
+                        if (saved[id]) element.innerHTML = saved[id];
+                    });
+                } catch (error) {
+                    console.warn('Unable to load edits', error);
+                }
+            }
+
+            save() {
+                const payload = {};
+                this.editables.forEach((element) => {
+                    payload[element.dataset.editId] = element.innerHTML;
+                });
+                localStorage.setItem(this.key, JSON.stringify(payload));
+            }
+
+            downloadSnapshot() {
+                const blob = new Blob(['<!DOCTYPE html>\n' + document.documentElement.outerHTML], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const anchor = document.createElement('a');
+                anchor.href = url;
+                anchor.download = 'ai-video-content-engine-style-a-edited.html';
+                document.body.appendChild(anchor);
+                anchor.click();
+                anchor.remove();
+                URL.revokeObjectURL(url);
+            }
+        }
+
+        /* ===========================================
+           EDIT TOGGLE HOVER CHAIN
+           Uses JS so the button stays reachable after leaving the hotzone.
+           =========================================== */
+        const hotzone = document.querySelector('.edit-hotzone');
+        const editToggle = document.getElementById('editToggle');
+        let hideTimeout = null;
+
+        hotzone.addEventListener('mouseenter', () => {
+            clearTimeout(hideTimeout);
+            editToggle.classList.add('show');
+        });
+
+        hotzone.addEventListener('mouseleave', () => {
+            hideTimeout = setTimeout(() => {
+                if (!document.body.classList.contains('editing')) editToggle.classList.remove('show');
+            }, 400);
+        });
+
+        editToggle.addEventListener('mouseenter', () => {
+            clearTimeout(hideTimeout);
+        });
+
+        editToggle.addEventListener('mouseleave', () => {
+            hideTimeout = setTimeout(() => {
+                if (!document.body.classList.contains('editing')) editToggle.classList.remove('show');
+            }, 400);
+        });
+
+        hotzone.addEventListener('click', () => {
+            editToggle.click();
+        });
+
+        new SlidePresentation();
+        new InlineEditor();
+    </script>
+</body>
+</html>
