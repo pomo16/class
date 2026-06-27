@@ -1,3 +1,8 @@
 *
 !.gitignore
 !index.html
+!assets/
+!assets/app-icons/
+!assets/app-icons/*.jpg
+!assets/generated/
+!assets/generated/*.png

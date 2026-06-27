@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
+<!-- saved from url=(0043)file:///Users/hoody/xfield/class/index.html -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI视频内容引擎 Style A</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <title>AI视频营销引擎 Style A</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=IBM+Plex+Mono:wght@400;600&amp;family=Noto+Sans+SC:wght@400;600;800;900&amp;display=swap" rel="stylesheet">
     <style>
         /* ===========================================
            CSS CUSTOM PROPERTIES: THEME
@@ -546,6 +546,463 @@
             color: var(--paper);
         }
 
+        .asset-proof-list {
+            display: grid;
+            gap: 14px;
+            width: 610px;
+            margin-top: 52px;
+        }
+
+        .asset-proof-item {
+            display: grid;
+            grid-template-columns: 122px 1fr;
+            align-items: center;
+            min-height: 72px;
+            border: 2px solid rgba(8,10,15,0.12);
+            background: rgba(255,255,255,0.78);
+            box-shadow: 0 22px 60px rgba(25,91,255,0.06);
+        }
+
+        .asset-proof-item .label {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(25,91,255,0.09);
+            color: var(--amber);
+            font-family: var(--font-mono);
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+        }
+
+        .asset-proof-item strong {
+            padding: 0 24px;
+            color: var(--paper);
+            font-family: var(--font-body);
+            font-size: 25px;
+            font-weight: 900;
+        }
+
+        .platform-shot-frame {
+            position: absolute;
+            right: -18px;
+            top: 92px;
+            width: 914px;
+            height: 526px;
+            border: 2px solid rgba(8,10,15,0.14);
+            background: #FFFFFF;
+            box-shadow: 0 34px 90px rgba(25,91,255,0.13);
+            overflow: hidden;
+        }
+
+        .platform-shot {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .platform-shot-frame.reference-shot {
+            right: 104px;
+            top: 184px;
+            width: 890px;
+            height: 500px;
+        }
+
+        .platform-shot-frame.character-shot {
+            right: 104px;
+            top: 176px;
+            width: 900px;
+            height: 506px;
+        }
+
+        .platform-shot-frame.storyboard-shot {
+            right: 104px;
+            top: 188px;
+            width: 890px;
+            height: 500px;
+        }
+
+        .platform-shot-frame.prompt-shot {
+            right: 96px;
+            top: 180px;
+            width: 900px;
+            height: 506px;
+        }
+
+        .platform-shot-frame.editing-shot {
+            right: 96px;
+            top: 172px;
+            width: 910px;
+            height: 512px;
+        }
+
+        .platform-shot-frame.editing-shot .platform-shot {
+            object-position: 46% center;
+        }
+
+        .library-copy {
+            position: absolute;
+            left: 112px;
+            top: 154px;
+            width: 690px;
+            z-index: 5;
+        }
+
+        .library-copy .subtitle {
+            max-width: 650px;
+        }
+
+        .compact-title {
+            font-size: 92px;
+            line-height: 1.04;
+        }
+
+        .build-grid {
+            position: absolute;
+            right: 112px;
+            top: 172px;
+            width: 820px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            z-index: 4;
+        }
+
+        .build-card,
+        .logic-card,
+        .version-card,
+        .workflow-card,
+        .asset-value-card {
+            border: 2px solid rgba(8,10,15,0.14);
+            background: rgba(255,255,255,0.82);
+            box-shadow: 0 24px 66px rgba(25,91,255,0.07);
+        }
+
+        .build-card {
+            min-height: 158px;
+            padding: 24px 26px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .build-card::before {
+            content: attr(data-step);
+            position: absolute;
+            right: 22px;
+            top: 18px;
+            color: rgba(25,91,255,0.22);
+            font-family: var(--font-mono);
+            font-size: 54px;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .build-card .label,
+        .logic-card .label,
+        .version-card .label,
+        .asset-value-card .label {
+            color: var(--amber);
+            font-family: var(--font-mono);
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            margin-bottom: 18px;
+        }
+
+        .build-card strong,
+        .logic-card strong,
+        .version-card strong,
+        .workflow-card strong,
+        .asset-value-card strong {
+            display: block;
+            color: var(--paper);
+            font-family: var(--font-display);
+            font-size: 34px;
+            font-weight: 900;
+            line-height: 1.08;
+        }
+
+        .build-card span,
+        .logic-card span,
+        .version-card span,
+        .workflow-card span,
+        .asset-value-card span {
+            display: block;
+            margin-top: 12px;
+            color: var(--paper-dim);
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.32;
+        }
+
+        .logic-stack {
+            display: grid;
+            gap: 16px;
+            width: 650px;
+            margin-top: 48px;
+        }
+
+        .logic-card {
+            min-height: 96px;
+            padding: 22px 26px;
+        }
+
+        .logic-card strong {
+            font-size: 30px;
+        }
+
+        .reuse-lanes {
+            position: absolute;
+            left: 112px;
+            right: 112px;
+            top: 460px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            z-index: 4;
+        }
+
+        .reuse-lanes .logic-card {
+            min-height: 178px;
+        }
+
+        .reuse-lanes .logic-card.danger {
+            border-color: rgba(231,67,52,0.28);
+            background: rgba(231,67,52,0.045);
+        }
+
+        .reuse-lanes .logic-card.danger .label,
+        .reuse-lanes .logic-card.danger strong {
+            color: var(--red);
+        }
+
+        .reference-method-slide .reuse-lanes {
+            top: 610px;
+        }
+
+        .asset-value-grid {
+            position: absolute;
+            left: 112px;
+            right: 112px;
+            top: 502px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            z-index: 4;
+        }
+
+        .asset-value-card {
+            min-height: 194px;
+            padding: 28px;
+        }
+
+        .shot-template-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-top: 46px;
+            width: 1480px;
+        }
+
+        .shot-card {
+            min-height: 330px;
+            border: 2px solid rgba(8,10,15,0.14);
+            background: rgba(255,255,255,0.82);
+            box-shadow: 0 24px 66px rgba(25,91,255,0.07);
+            overflow: hidden;
+        }
+
+        .shot-card .shot-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 74px;
+            padding: 0 22px;
+            border-bottom: 2px solid rgba(8,10,15,0.10);
+        }
+
+        .shot-card .shot-id {
+            color: var(--amber);
+            font-family: var(--font-mono);
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .shot-card strong {
+            color: var(--paper);
+            font-size: 28px;
+            font-weight: 900;
+        }
+
+        .shot-card .shot-body {
+            padding: 24px 22px;
+        }
+
+        .shot-card p {
+            margin: 0 0 18px;
+            color: var(--paper-dim);
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.34;
+        }
+
+        .shot-card .shot-tag {
+            display: inline-flex;
+            align-items: center;
+            min-height: 38px;
+            padding: 0 14px;
+            margin: 0 8px 8px 0;
+            background: rgba(25,91,255,0.08);
+            color: var(--amber);
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .module-chip-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            width: 680px;
+            margin-top: 44px;
+        }
+
+        .module-chip {
+            min-height: 58px;
+            display: inline-flex;
+            align-items: center;
+            padding: 0 22px;
+            border: 2px solid rgba(25,91,255,0.18);
+            background: rgba(25,91,255,0.06);
+            color: var(--paper);
+            font-size: 22px;
+            font-weight: 900;
+        }
+
+        .control-board {
+            position: absolute;
+            right: 112px;
+            top: 178px;
+            width: 760px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            z-index: 4;
+        }
+
+        .control-card {
+            min-height: 186px;
+            border: 2px solid rgba(8,10,15,0.14);
+            background: rgba(255,255,255,0.84);
+            padding: 26px;
+            box-shadow: 0 24px 66px rgba(25,91,255,0.07);
+        }
+
+        .control-card .axis {
+            color: var(--amber);
+            font-family: var(--font-mono);
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            margin-bottom: 16px;
+        }
+
+        .control-card strong {
+            color: var(--paper);
+            font-size: 30px;
+            font-weight: 900;
+        }
+
+        .control-card .meter {
+            height: 8px;
+            margin-top: 22px;
+            background: rgba(8,10,15,0.10);
+            position: relative;
+        }
+
+        .control-card .meter::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: var(--value, 62%);
+            background: var(--amber);
+        }
+
+        .version-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-top: 46px;
+            width: 1480px;
+        }
+
+        .version-card {
+            min-height: 256px;
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .version-card::after {
+            content: attr(data-ratio);
+            position: absolute;
+            right: 24px;
+            bottom: 22px;
+            color: rgba(25,91,255,0.18);
+            font-family: var(--font-mono);
+            font-size: 52px;
+            font-weight: 800;
+        }
+
+        .workflow-canvas {
+            position: absolute;
+            left: 112px;
+            right: 112px;
+            top: 388px;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 18px;
+            z-index: 4;
+        }
+
+        .workflow-card {
+            min-height: 256px;
+            padding: 28px 22px;
+            position: relative;
+        }
+
+        .workflow-card::before {
+            content: attr(data-id);
+            display: block;
+            color: var(--amber);
+            font-family: var(--font-mono);
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 24px;
+        }
+
+        .workflow-card:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            width: 20px;
+            height: 2px;
+            background: var(--amber);
+        }
+
+        .asset-summary-slide .asset-value-grid {
+            top: 610px;
+        }
+
+        .workflow-review-slide .workflow-canvas {
+            top: 530px;
+        }
+
         .flow-line {
             position: absolute;
             left: 104px;
@@ -703,6 +1160,28 @@
             font-family: var(--font-mono);
             font-size: 18px;
             color: var(--paper-dim);
+        }
+
+        .case-illustration {
+            position: absolute;
+            right: 118px;
+            top: 168px;
+            width: 760px;
+            height: 520px;
+            z-index: 4;
+            border: 2px solid rgba(8,10,15,0.14);
+            border-radius: 30px;
+            background: #FFFFFF;
+            box-shadow: 0 34px 90px rgba(25,91,255,0.12);
+            overflow: hidden;
+        }
+
+        .case-illustration img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center;
         }
 
         .output-strip {
@@ -1004,6 +1483,202 @@
             letter-spacing: 0;
         }
 
+        .pain-slide .content-wide {
+            width: 1040px;
+        }
+
+        .pain-slide .subtitle {
+            max-width: 780px;
+        }
+
+        .pain-grid {
+            width: 1040px;
+            margin-top: 54px;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 18px;
+        }
+
+        .pain-card {
+            min-height: 118px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 26px 30px;
+            background: #FFFFFF;
+            border: 2px solid rgba(8,10,15,0.14);
+            box-shadow: 0 24px 60px rgba(25,91,255,0.08);
+            overflow: hidden;
+        }
+
+        .pain-card::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 8px;
+            background: var(--amber);
+        }
+
+        .pain-card::after {
+            content: "";
+            position: absolute;
+            right: -46px;
+            bottom: -46px;
+            width: 118px;
+            height: 118px;
+            border: 2px solid rgba(25,91,255,0.12);
+            border-radius: 50%;
+        }
+
+        .pain-card .pain-num {
+            position: relative;
+            z-index: 1;
+            color: var(--amber);
+            font-family: var(--font-mono);
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+        }
+
+        .pain-card strong {
+            position: relative;
+            z-index: 1;
+            color: var(--paper);
+            font-family: var(--font-display);
+            font-size: 40px;
+            font-weight: 900;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .pain-card:nth-child(1) { grid-column: 1 / span 2; }
+        .pain-card:nth-child(2) { grid-column: 3 / span 2; transform: translateY(24px); }
+        .pain-card:nth-child(3) { grid-column: 5 / span 2; }
+        .pain-card:nth-child(4) { grid-column: 1 / span 3; margin-top: 20px; }
+        .pain-card:nth-child(5) { grid-column: 4 / span 3; margin-top: 44px; }
+
+        .software-cloud {
+            position: absolute;
+            right: 126px;
+            top: 184px;
+            width: 560px;
+            height: 650px;
+            z-index: 4;
+        }
+
+        .software-cloud::before {
+            content: "";
+            position: absolute;
+            left: 88px;
+            right: 28px;
+            top: 86px;
+            bottom: 78px;
+            border: 2px dashed rgba(25,91,255,0.18);
+            border-radius: 48% 52% 46% 54%;
+            transform: rotate(-8deg);
+        }
+
+        .software-cloud::after {
+            content: "";
+            position: absolute;
+            left: 180px;
+            top: 220px;
+            width: 210px;
+            height: 210px;
+            background: rgba(25,91,255,0.07);
+            border-radius: 50%;
+            filter: blur(2px);
+        }
+
+        .software-icon {
+            position: absolute;
+            width: 148px;
+            height: 148px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border-radius: 34px;
+            background: linear-gradient(145deg, #FFFFFF, #EEF3FF);
+            border: 2px solid rgba(25,91,255,0.18);
+            box-shadow: 0 34px 76px rgba(25,91,255,0.16);
+        }
+
+        .software-icon .app-logo {
+            width: 74px;
+            height: 74px;
+            display: block;
+            border-radius: 19px;
+            object-fit: cover;
+            box-shadow: 0 16px 34px rgba(8,10,15,0.14);
+        }
+
+        .software-icon .name {
+            color: var(--paper);
+            font-family: var(--font-body);
+            font-size: 22px;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .software-icon.jianying { left: 34px; top: 70px; transform: rotate(-8deg); }
+        .software-icon.jimeng { right: 38px; top: 18px; transform: rotate(6deg); }
+        .software-icon.keling { left: 156px; top: 262px; transform: rotate(3deg); }
+        .software-icon.doubao { right: 48px; bottom: 64px; transform: rotate(-5deg); }
+
+        .prompt-bubble-field {
+            position: absolute;
+            right: 54px;
+            top: 116px;
+            width: 790px;
+            height: 760px;
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        .prompt-bubble {
+            position: absolute;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 150px;
+            min-height: 58px;
+            padding: 0 30px;
+            border: 2px solid rgba(25,91,255,0.18);
+            border-radius: 999px;
+            background: rgba(255,255,255,0.78);
+            color: rgba(8,10,15,0.72);
+            font-family: var(--font-body);
+            font-size: 25px;
+            font-weight: 800;
+            line-height: 1;
+            box-shadow: 0 24px 70px rgba(25,91,255,0.08);
+            white-space: nowrap;
+        }
+
+        .prompt-bubble::after {
+            content: "";
+            position: absolute;
+            inset: -9px;
+            border: 1px solid rgba(25,91,255,0.08);
+            border-radius: inherit;
+        }
+
+        .prompt-bubble:nth-child(1) { left: 96px; top: 0; transform: rotate(-6deg); }
+        .prompt-bubble:nth-child(2) { right: 8px; top: 86px; transform: rotate(5deg); }
+        .prompt-bubble:nth-child(3) { left: 330px; top: 184px; transform: rotate(-3deg); }
+        .prompt-bubble:nth-child(4) { left: 26px; top: 278px; transform: rotate(3deg); }
+        .prompt-bubble:nth-child(5) { right: 56px; top: 340px; transform: rotate(-4deg); }
+        .prompt-bubble:nth-child(6) { left: 196px; top: 466px; transform: rotate(4deg); }
+        .prompt-bubble:nth-child(7) { right: 250px; top: 572px; transform: rotate(2deg); }
+        .prompt-bubble:nth-child(8) { left: 0; bottom: 54px; transform: rotate(-5deg); }
+        .prompt-bubble:nth-child(9) { right: 18px; bottom: 0; transform: rotate(4deg); }
+
         .matrix-cell .small,
         .flow-node .id,
         .asset-block .num {
@@ -1138,15 +1813,15 @@
 </head>
 <body>
     <div class="deck-viewport">
-        <main class="deck-stage" id="deckStage">
-            <section class="slide active visible" data-slide-title="AI视频内容引擎">
+        <main class="deck-stage" id="deckStage" style="transform: translate(0px, 3.25px) scale(0.7875);">
+            <section class="slide active visible" data-slide-title="AI视频营销引擎">
                 <div class="frame"></div>
-                <div class="hud"><div>AI VIDEO CONTENT ENGINE</div><div>SIX LIBRARIES / ONE WORKFLOW</div></div>
+                <div class="hud"><div>AI VIDEO MARKETING ENGINE</div><div>GROWTH CONTENT SYSTEM</div></div>
                 <div class="content">
-                    <div class="kicker reveal">企业营销素材系统</div>
-                    <h1 class="reveal" data-editable data-edit-id="s01-title">AI视频<br>内容引擎</h1>
-                    <p class="subtitle reveal" data-editable data-edit-id="s01-subtitle">企业营销素材的多模态生成工作流</p>
-                    <p class="cover-author reveal" data-editable data-edit-id="s01-author">作者：hoody</p>
+                    <div class="kicker reveal">企业获客内容系统</div>
+                    <h1 class="reveal" data-editable="" data-edit-id="s01-title">AI视频<br>营销引擎</h1>
+                    <p class="subtitle reveal" data-editable="" data-edit-id="s01-subtitle">把内容生产变成降本、增效、拓客能力</p>
+                    <p class="cover-author reveal" data-editable="" data-edit-id="s01-author">作者：hoody</p>
                 </div>
                 <div class="viewfinder reveal">
                     <div class="circle"></div>
@@ -1162,82 +1837,90 @@
                 <div class="hud"><div>AGENDA</div><div>30 MINUTES</div></div>
                 <div class="content-wide">
                     <div class="kicker reveal">目录</div>
-                    <h2 class="reveal" data-editable data-edit-id="s02-title">今天讲四件事</h2>
+                    <h2 class="reveal" data-editable="" data-edit-id="s02-title">企业真正关心<br>几件事</h2>
                     <div class="agenda-grid reveal">
-                        <div class="agenda-card"><div class="num">01</div><strong>重新定义问题</strong><span>企业缺的不是 AI 工具</span></div>
-                        <div class="agenda-card"><div class="num">02</div><strong>企业六个库</strong><span>把能力沉淀成资产</span></div>
-                        <div class="agenda-card"><div class="num">03</div><strong>参考视频 demo</strong><span>用两个模特视频说明参考</span></div>
-                        <div class="agenda-card"><div class="num">04</div><strong>workflow 复盘</strong><span>从输入走到成片</span></div>
+                        <div class="agenda-card"><div class="num">01</div><strong>招人焦虑</strong><span>高薪招人，增长没有变快</span></div>
+                        <div class="agenda-card"><div class="num">02</div><strong>降本增效</strong><span>工具买了，流程还是手工</span></div>
+                        <div class="agenda-card"><div class="num">03</div><strong>拓客增长</strong><span>视频做了，客户没有变多</span></div>
+                        <div class="agenda-card"><div class="num">04</div><strong>内容引擎</strong><span>内容资产没有沉淀下来</span></div>
                     </div>
                 </div>
                 <div class="page-mark">02 / 22</div>
             </section>
 
-            <section class="slide" data-slide-title="为什么学了工具还是出不了片">
+            <section class="slide pain-slide" data-slide-title="招了 AI 视频人才为什么增长没有变快">
                 <div class="frame"></div>
-                <div class="hud"><div>BOTTLENECK</div><div>NO ASSET SYSTEM</div></div>
+                <div class="hud"><div>HIRING BOTTLENECK</div><div>NO CONTENT SYSTEM</div></div>
                 <div class="content-wide">
-                    <div class="kicker reveal">常见卡点</div>
-                    <h2 class="reveal" data-editable data-edit-id="s03-title">为什么学了工具<br>还是出不了片</h2>
-                    <p class="subtitle reveal" data-editable data-edit-id="s03-subtitle">因为没有库,每次都从零开始抽卡。</p>
-                    <div class="tag-row reveal">
-                        <div class="tag">素材散</div>
-                        <div class="tag">参考乱</div>
-                        <div class="tag">分镜空</div>
-                        <div class="tag">提示词靠猜</div>
-                        <div class="tag">剪辑没人接</div>
+                    <div class="kicker reveal">招人焦虑</div>
+                    <h2 class="reveal" data-editable="" data-edit-id="s03-title">招了 AI 视频人才<br>增长没有变快</h2>
+                    <p class="subtitle reveal" data-editable="" data-edit-id="s03-subtitle">问题不在人,是企业没有内容生产系统。</p>
+                    <div class="pain-grid reveal">
+                        <div class="pain-card"><span class="pain-num">01</span><strong>2-3万招人</strong></div>
+                        <div class="pain-card"><span class="pain-num">02</span><strong>70%找素材</strong></div>
+                        <div class="pain-card"><span class="pain-num">03</span><strong>脚本反复重写</strong></div>
+                        <div class="pain-card"><span class="pain-num">04</span><strong>工具越买越多</strong></div>
+                        <div class="pain-card"><span class="pain-num">05</span><strong>客户没有变多</strong></div>
                     </div>
+                </div>
+                <div class="software-cloud reveal" aria-label="常见 AI 视频与剪辑工具">
+                    <div class="software-icon jianying"><img class="app-logo" src="./a_files/jianying.jpg" alt="剪映 icon" loading="eager"><span class="name">剪映</span></div>
+                    <div class="software-icon jimeng"><img class="app-logo" src="./a_files/jimeng.jpg" alt="即梦 icon" loading="eager"><span class="name">即梦</span></div>
+                    <div class="software-icon keling"><img class="app-logo" src="./a_files/keling.jpg" alt="可灵 icon" loading="eager"><span class="name">可灵</span></div>
+                    <div class="software-icon doubao"><img class="app-logo" src="./a_files/doubao.jpg" alt="豆包 icon" loading="eager"><span class="name">豆包</span></div>
                 </div>
                 <div class="page-mark">03 / 22</div>
             </section>
 
-            <section class="slide" data-slide-title="六个库协同生产">
+            <section class="slide" data-slide-title="老板要的不是视频">
                 <div class="frame"></div>
-                <div class="hud"><div>REFRAME</div><div>PROMPT IS ONLY ONE LAYER</div></div>
+                <div class="hud"><div>REFRAME</div><div>FROM VIDEO TO BUSINESS RESULT</div></div>
                 <div class="statement">
                     <div class="kicker reveal">核心判断</div>
-                    <h2 class="big-word reveal" data-editable data-edit-id="s04-title">高质量 AI 视频<br>不是<span class="accent">提示词</span></h2>
-                    <p class="subtitle reveal" data-editable data-edit-id="s04-subtitle">是六个库协同生产。</p>
+                    <h2 class="big-word reveal" data-editable="" data-edit-id="s04-title">老板要的<br>不是<span class="accent">视频</span></h2>
+                    <p class="subtitle reveal" data-editable="" data-edit-id="s04-subtitle">是降本、增效、拓客,以及更稳定的客户触达。</p>
+                </div>
+                <div class="prompt-bubble-field reveal" aria-label="常见视频提示词短语">
+                    <span class="prompt-bubble">月薪 2-3 万</span>
+                    <span class="prompt-bubble">3 天等初稿</span>
+                    <span class="prompt-bubble">5 轮修改</span>
+                    <span class="prompt-bubble">素材散落</span>
+                    <span class="prompt-bubble">销售没素材</span>
+                    <span class="prompt-bubble">投放缺版本</span>
+                    <span class="prompt-bubble">私域断更</span>
+                    <span class="prompt-bubble">工具堆叠</span>
+                    <span class="prompt-bubble">增长没反馈</span>
                 </div>
                 <div class="page-mark">04 / 22</div>
             </section>
 
-            <section class="slide" data-slide-title="企业 AI 视频内容引擎">
+            <section class="slide" data-slide-title="AI 视频真正省的不是剪辑费">
                 <div class="frame"></div>
-                <div class="hud"><div>CORE MAP</div><div>SIX LIBRARIES</div></div>
-                <div class="content-wide">
-                    <div class="kicker reveal">内容引擎地图</div>
-                    <h2 class="reveal" data-editable data-edit-id="s05-title">企业 AI 视频内容引擎<br>= 六个库</h2>
-                    <div class="library-grid reveal">
-                        <div class="library-card" data-index="01"><strong>产品素材库</strong><span>锁定卖什么</span></div>
-                        <div class="library-card" data-index="02"><strong>参考视频库</strong><span>锁定怎么表达</span></div>
-                        <div class="library-card" data-index="03"><strong>角色场景库</strong><span>锁定谁来讲、在哪里讲</span></div>
-                        <div class="library-card" data-index="04"><strong>分镜脚本库</strong><span>锁定按什么顺序讲</span></div>
-                        <div class="library-card" data-index="05"><strong>生成提示词库</strong><span>锁定怎么让模型执行</span></div>
-                        <div class="library-card" data-index="06"><strong>剪辑发布库</strong><span>锁定怎么变成可投放素材</span></div>
-                    </div>
+                <div class="hud"><div>COST DOWN / EFFICIENCY UP</div><div>REUSE BEFORE GENERATE</div></div>
+                <div class="content">
+                    <div class="kicker reveal">降本增效</div>
+                    <h2 class="reveal" data-editable="" data-edit-id="s06-title">AI 视频真正省的<br>不是剪辑费</h2>
+                    <p class="subtitle reveal" data-editable="" data-edit-id="s06-subtitle">是重复沟通、重复试错、重复返工的成本。</p>
+                </div>
+                <div class="case-illustration reveal">
+                    <img src="./a_files/cost-rework-owner-case.png" alt="团队围绕多版短视频反复沟通修改" loading="eager">
                 </div>
                 <div class="page-mark">05 / 22</div>
             </section>
 
-            <section class="slide" data-slide-title="AI视频模型最强的不是生成是参考">
+            <section class="slide" data-slide-title="企业 AI 视频营销引擎">
                 <div class="frame"></div>
-                <div class="hud"><div>REFERENCE FIRST</div><div>TWO MODEL VIDEOS</div></div>
-                <div class="content">
-                    <div class="kicker reveal">参考优先</div>
-                    <h2 class="reveal" data-editable data-edit-id="s06-title">AI视频模型最强的<br>不是生成，是参考</h2>
-                    <p class="subtitle reveal" data-editable data-edit-id="s06-subtitle">用参考视频锁定动作、姿态、节奏和镜头。</p>
-                </div>
-                <div class="demo-board reveal">
-                    <div class="screen"></div>
-                    <div class="demo-labels">
-                        <div>MODEL VIDEO / 01</div>
-                        <div>MODEL VIDEO / 02</div>
-                    </div>
-                    <div class="tag-row" style="margin-top: 28px;">
-                        <div class="tag" style="height: 52px; font-size: 17px;">动作参考</div>
-                        <div class="tag" style="height: 52px; font-size: 17px;">姿态参考</div>
-                        <div class="tag" style="height: 52px; font-size: 17px;">镜头节奏</div>
+                <div class="hud"><div>CORE MAP</div><div>SIX LIBRARIES</div></div>
+                <div class="content-wide">
+                    <div class="kicker reveal">答案揭晓</div>
+                    <h2 class="reveal" data-editable="" data-edit-id="s05-title">企业 AI 视频营销引擎<br>= 六个库</h2>
+                    <div class="library-grid reveal">
+                        <div class="library-card" data-index="01"><strong>产品素材库</strong><span>让内容始终知道卖什么</span></div>
+                        <div class="library-card" data-index="02"><strong>参考视频库</strong><span>沉淀成交表达结构</span></div>
+                        <div class="library-card" data-index="03"><strong>角色场景库</strong><span>建立稳定信任入口</span></div>
+                        <div class="library-card" data-index="04"><strong>分镜脚本库</strong><span>把卖点拆成转化镜头</span></div>
+                        <div class="library-card" data-index="05"><strong>生成提示词库</strong><span>让模型执行营销意图</span></div>
+                        <div class="library-card" data-index="06"><strong>剪辑发布库</strong><span>把一次生成扩展成触点</span></div>
                     </div>
                 </div>
                 <div class="page-mark">06 / 22</div>
@@ -1249,13 +1932,16 @@
                 <div class="split">
                     <div>
                         <div class="kicker reveal">库一</div>
-                        <h2 class="reveal" data-editable data-edit-id="s07-title">产品素材库</h2>
-                        <p class="subtitle reveal" data-editable data-edit-id="s07-subtitle">先把产品讲清楚,AI 才知道该突出什么。</p>
+                        <h2 class="reveal" data-editable="" data-edit-id="s07-title">产品素材库</h2>
+                        <p class="subtitle reveal" data-editable="" data-edit-id="s07-subtitle">让每条内容都围绕卖点,而不是围绕灵感。</p>
+                        <div class="asset-proof-list reveal">
+                            <div class="asset-proof-item"><span class="label">IMAGE</span><strong>客户先看到什么</strong></div>
+                            <div class="asset-proof-item"><span class="label">POINT</span><strong>销售到底推什么</strong></div>
+                            <div class="asset-proof-item"><span class="label">SCENE</span><strong>谁会在什么场景买</strong></div>
+                        </div>
                     </div>
-                    <div class="asset-stack reveal">
-                        <div class="asset-block"><div class="num">PRODUCT IMAGE</div><div class="name">产品图</div></div>
-                        <div class="asset-block"><div class="num">SELLING POINT</div><div class="name">卖点 / 参数</div></div>
-                        <div class="asset-block"><div class="num">USE SCENE</div><div class="name">人群 / 场景</div></div>
+                    <div class="platform-shot-frame reveal" aria-label="产品素材库平台截图示意">
+                        <img class="platform-shot" src="./a_files/product-asset-platform.png" alt="产品素材库平台截图示意">
                     </div>
                 </div>
                 <div class="page-mark">07 / 22</div>
@@ -1264,10 +1950,18 @@
             <section class="slide" data-slide-title="产品素材库怎么建">
                 <div class="frame"></div>
                 <div class="hud"><div>LIBRARY 01 METHOD</div><div>FROM FILES TO STRUCTURE</div></div>
-                <div class="statement">
+                <div class="library-copy">
                     <div class="kicker reveal">建设方法</div>
-                    <h2 class="big-word reveal" data-editable data-edit-id="s08-title">产品素材库<br>怎么建</h2>
-                    <p class="subtitle reveal" data-editable data-edit-id="s08-subtitle">产品图、卖点、人群、场景、竞品差异。</p>
+                    <h2 class="compact-title reveal" data-editable="" data-edit-id="s08-title">把产品资产<br>变成内容燃料</h2>
+                    <p class="subtitle reveal" data-editable="" data-edit-id="s08-subtitle">产品图、卖点、人群、场景、竞品差异,先标准化。</p>
+                </div>
+                <div class="build-grid reveal">
+                    <div class="build-card" data-step="01"><div class="label">IMAGE</div><strong>产品图归档</strong><span>主图、细节图、使用图统一入库</span></div>
+                    <div class="build-card" data-step="02"><div class="label">POINT</div><strong>销售主推卖点</strong><span>功效、参数、证据、禁用词分开</span></div>
+                    <div class="build-card" data-step="03"><div class="label">AUDIENCE</div><strong>目标客户分层</strong><span>谁在买、为什么买、什么场景买</span></div>
+                    <div class="build-card" data-step="04"><div class="label">SCENE</div><strong>成交场景标签</strong><span>门店、直播间、私域、销售跟进</span></div>
+                    <div class="build-card" data-step="05"><div class="label">DIFF</div><strong>竞品差异</strong><span>明确不能说什么，也明确要突出什么</span></div>
+                    <div class="build-card" data-step="06"><div class="label">READY</div><strong>可生成素材包</strong><span>让后面的分镜和提示词有依据</span></div>
                 </div>
                 <div class="page-mark">08 / 22</div>
             </section>
@@ -1275,27 +1969,35 @@
             <section class="slide" data-slide-title="库二参考视频库">
                 <div class="frame"></div>
                 <div class="hud"><div>LIBRARY 02</div><div>REFERENCE VIDEOS</div></div>
-                <div class="content-wide">
+                <div class="library-copy">
                     <div class="kicker reveal">库二</div>
-                    <h2 class="reveal" data-editable data-edit-id="s09-title">参考视频库</h2>
-                    <p class="subtitle reveal" data-editable data-edit-id="s09-subtitle">不是抄爆款,是复用被验证过的表达结构。</p>
-                    <div class="matrix reveal">
-                        <div class="matrix-cell"><div class="small">MOTION</div><strong>动作</strong></div>
-                        <div class="matrix-cell"><div class="small">CAMERA</div><strong>运镜</strong></div>
-                        <div class="matrix-cell"><div class="small">RHYTHM</div><strong>节奏</strong></div>
-                        <div class="matrix-cell"><div class="small">TRANSITION</div><strong>转场</strong></div>
+                    <h2 class="reveal" data-editable="" data-edit-id="s09-title">参考视频库</h2>
+                    <p class="subtitle reveal" data-editable="" data-edit-id="s09-subtitle">不是抄爆款,是沉淀被市场验证过的成交表达。</p>
+                    <div class="logic-stack reveal">
+                        <div class="logic-card"><div class="label">COPY STRUCTURE</div><strong>复用成交结构</strong><span>开头、动作、节奏、转场可被沉淀</span></div>
+                        <div class="logic-card"><div class="label">KEEP BOUNDARY</div><strong>不复用品牌</strong><span>不借 logo、不借人设、不借独家素材</span></div>
                     </div>
+                </div>
+                <div class="platform-shot-frame reference-shot reveal" aria-label="参考视频库简化示意图">
+                    <img class="platform-shot" src="./a_files/reference-video-platform.png" alt="参考视频库简化示意图">
                 </div>
                 <div class="page-mark">09 / 22</div>
             </section>
 
-            <section class="slide" data-slide-title="参考视频库怎么用">
+            <section class="slide reference-method-slide" data-slide-title="参考视频库怎么用">
                 <div class="frame"></div>
                 <div class="hud"><div>LIBRARY 02 METHOD</div><div>REFERENCE WITH BOUNDARIES</div></div>
-                <div class="statement">
+                <div class="content-wide">
                     <div class="kicker reveal">使用方法</div>
-                    <h2 class="big-word reveal" data-editable data-edit-id="s10-title">参考视频库<br>怎么用</h2>
-                    <p class="subtitle reveal" data-editable data-edit-id="s10-subtitle">借动作、借运镜、借节奏,不借品牌。</p>
+                    <h2 class="reveal" data-editable="" data-edit-id="s10-title">参考视频库<br>怎么用</h2>
+                    <p class="subtitle reveal" data-editable="" data-edit-id="s10-subtitle">借开头、借节奏、借转化结构,不借品牌。</p>
+                </div>
+                <div class="reuse-lanes reveal">
+                    <div class="logic-card"><div class="label">01</div><strong>借开头</strong><span>客户为什么要停下来，看前三秒</span></div>
+                    <div class="logic-card"><div class="label">02</div><strong>借动作</strong><span>产品怎么出现，用户怎么使用</span></div>
+                    <div class="logic-card"><div class="label">03</div><strong>借节奏</strong><span>哪里加速、哪里停顿、哪里给证明</span></div>
+                    <div class="logic-card"><div class="label">04</div><strong>借转化结构</strong><span>痛点、产品、证明、行动怎么串</span></div>
+                    <div class="logic-card danger"><div class="label">STOP</div><strong>不借品牌</strong><span>不复制 IP、口号、人物和独家视觉资产</span></div>
                 </div>
                 <div class="page-mark">10 / 22</div>
             </section>
@@ -1303,31 +2005,34 @@
             <section class="slide" data-slide-title="库三角色场景库">
                 <div class="frame"></div>
                 <div class="hud"><div>LIBRARY 03</div><div>CHARACTERS / SCENES</div></div>
-                <div class="split">
-                    <div>
-                        <div class="kicker reveal">库三</div>
-                        <h2 class="reveal" data-editable data-edit-id="s11-title">角色场景库</h2>
-                        <p class="subtitle reveal" data-editable data-edit-id="s11-subtitle">让视频有稳定的“人”和“场”。</p>
+                <div class="library-copy">
+                    <div class="kicker reveal">库三</div>
+                    <h2 class="reveal" data-editable="" data-edit-id="s11-title">角色场景库</h2>
+                    <p class="subtitle reveal" data-editable="" data-edit-id="s11-subtitle">让客户反复看到稳定的人和场,形成信任入口。</p>
+                    <div class="logic-stack reveal">
+                        <div class="logic-card"><div class="label">PERSON</div><strong>谁来建立信任</strong><span>虚拟代言人、品牌主播、员工角色</span></div>
+                        <div class="logic-card"><div class="label">PLACE</div><strong>在哪里触达客户</strong><span>直播间、门店、办公室、产品展示台</span></div>
                     </div>
-                    <div class="soft-panel reveal" style="padding: 44px;">
-                        <div class="library-grid" style="grid-template-columns: 1fr 1fr; width: 100%; margin-top: 0;">
-                            <div class="library-card" data-index="A"><strong>虚拟代言人</strong><span>稳定讲产品</span></div>
-                            <div class="library-card" data-index="B"><strong>品牌主播</strong><span>稳定做切片</span></div>
-                            <div class="library-card" data-index="C"><strong>办公场景</strong><span>适合 ToB</span></div>
-                            <div class="library-card" data-index="D"><strong>直播间</strong><span>适合电商</span></div>
-                        </div>
-                    </div>
+                </div>
+                <div class="platform-shot-frame character-shot reveal" aria-label="角色场景库简化示意图">
+                    <img class="platform-shot" src="./a_files/character-scene-platform.png" alt="角色场景库简化示意图">
                 </div>
                 <div class="page-mark">11 / 22</div>
             </section>
 
-            <section class="slide" data-slide-title="虚拟代言人不是换脸噱头">
+            <section class="slide asset-summary-slide" data-slide-title="虚拟代言人不是换脸噱头">
                 <div class="frame"></div>
                 <div class="hud"><div>AVATAR POSITIONING</div><div>BRAND ASSET</div></div>
-                <div class="statement">
+                <div class="content-wide">
                     <div class="kicker reveal">角色资产</div>
-                    <h2 class="big-word reveal" data-editable data-edit-id="s12-title">虚拟代言人<br>不是<span class="accent">换脸噱头</span></h2>
-                    <p class="subtitle reveal" data-editable data-edit-id="s12-subtitle">它是品牌可复用的视频表达资产。</p>
+                    <h2 class="reveal" data-editable="" data-edit-id="s12-title">虚拟代言人<br>不是<span class="accent">换脸噱头</span></h2>
+                    <p class="subtitle reveal" data-editable="" data-edit-id="s12-subtitle">它是品牌可复用的客户触达资产。</p>
+                </div>
+                <div class="asset-value-grid reveal">
+                    <div class="asset-value-card"><div class="label">IDENTITY</div><strong>稳定身份</strong><span>外形、年龄、语气、专业领域固定</span></div>
+                    <div class="asset-value-card"><div class="label">TRUST</div><strong>稳定信任</strong><span>客户每次看到都知道是谁在说</span></div>
+                    <div class="asset-value-card"><div class="label">SCENE</div><strong>稳定场景</strong><span>同一个人能进入不同业务场景</span></div>
+                    <div class="asset-value-card"><div class="label">REUSE</div><strong>稳定复用</strong><span>不是一次换脸，是长期触达资产</span></div>
                 </div>
                 <div class="page-mark">12 / 22</div>
             </section>
@@ -1335,16 +2040,17 @@
             <section class="slide" data-slide-title="库四分镜脚本库">
                 <div class="frame"></div>
                 <div class="hud"><div>LIBRARY 04</div><div>STORYBOARD / SCRIPT</div></div>
-                <div class="content-wide">
+                <div class="library-copy">
                     <div class="kicker reveal">库四</div>
-                    <h2 class="reveal" data-editable data-edit-id="s13-title">分镜脚本库</h2>
-                    <p class="subtitle reveal" data-editable data-edit-id="s13-subtitle">把卖点拆成镜头,而不是只拆成文案。</p>
-                    <div class="matrix reveal">
-                        <div class="matrix-cell"><div class="small">01</div><strong>痛点</strong></div>
-                        <div class="matrix-cell"><div class="small">02</div><strong>产品出现</strong></div>
-                        <div class="matrix-cell"><div class="small">03</div><strong>使用过程</strong></div>
-                        <div class="matrix-cell"><div class="small">04</div><strong>结果展示</strong></div>
+                    <h2 class="reveal" data-editable="" data-edit-id="s13-title">分镜脚本库</h2>
+                    <p class="subtitle reveal" data-editable="" data-edit-id="s13-subtitle">把卖点拆成客户看得懂的成交镜头。</p>
+                    <div class="logic-stack reveal">
+                        <div class="logic-card"><div class="label">CLAIM TO SHOT</div><strong>卖点变场景</strong><span>一句卖点，拆成画面、动作、证据、时长</span></div>
+                        <div class="logic-card"><div class="label">SHOT TEMPLATE</div><strong>结构可复用</strong><span>痛点、产品、证明、行动形成稳定结构</span></div>
                     </div>
+                </div>
+                <div class="platform-shot-frame storyboard-shot reveal" aria-label="分镜脚本库简化示意图">
+                    <img class="platform-shot" src="./a_files/storyboard-platform.png" alt="分镜脚本库简化示意图">
                 </div>
                 <div class="page-mark">13 / 22</div>
             </section>
@@ -1353,14 +2059,13 @@
                 <div class="frame"></div>
                 <div class="hud"><div>STORYBOARD METHOD</div><div>ONE CLAIM / FOUR SHOTS</div></div>
                 <div class="content-wide">
-                    <div class="kicker reveal">镜头模板</div>
-                    <h2 class="reveal" data-editable data-edit-id="s14-title">一个卖点如何<br>变成 4 个镜头</h2>
-                    <div class="flow-line reveal" style="position: relative; left: 0; right: auto; top: auto; width: 1260px; margin-top: 56px;"></div>
-                    <div class="flow-nodes reveal" style="position: relative; left: 0; right: auto; top: 16px; grid-template-columns: repeat(4, 1fr); width: 1260px;">
-                        <div class="flow-node"><div class="id">01</div><strong>痛点</strong></div>
-                        <div class="flow-node"><div class="id">02</div><strong>产品出现</strong></div>
-                        <div class="flow-node"><div class="id">03</div><strong>使用过程</strong></div>
-                        <div class="flow-node"><div class="id">04</div><strong>结果展示</strong></div>
+                    <div class="kicker reveal">成交镜头</div>
+                    <h2 class="reveal" data-editable="" data-edit-id="s14-title">一个卖点如何<br>变成成交镜头</h2>
+                    <div class="shot-template-grid reveal">
+                        <div class="shot-card"><div class="shot-head"><span class="shot-id">01</span><strong>痛点唤起</strong></div><div class="shot-body"><p>先让客户看到自己的问题，不急着介绍产品。</p><span class="shot-tag">情绪</span><span class="shot-tag">场景</span></div></div>
+                        <div class="shot-card"><div class="shot-head"><span class="shot-id">02</span><strong>产品出现</strong></div><div class="shot-body"><p>产品以解决方案出现，画面主体明确。</p><span class="shot-tag">主体</span><span class="shot-tag">卖点</span></div></div>
+                        <div class="shot-card"><div class="shot-head"><span class="shot-id">03</span><strong>使用证明</strong></div><div class="shot-body"><p>动作展示怎么用，镜头负责证明过程。</p><span class="shot-tag">动作</span><span class="shot-tag">证据</span></div></div>
+                        <div class="shot-card"><div class="shot-head"><span class="shot-id">04</span><strong>行动收口</strong></div><div class="shot-body"><p>最后给结果、对比或下一步转化动作。</p><span class="shot-tag">证明</span><span class="shot-tag">转化</span></div></div>
                     </div>
                 </div>
                 <div class="page-mark">14 / 22</div>
@@ -1369,26 +2074,38 @@
             <section class="slide" data-slide-title="库五生成提示词库">
                 <div class="frame"></div>
                 <div class="hud"><div>LIBRARY 05</div><div>PROMPT MODULES</div></div>
-                <div class="statement">
+                <div class="library-copy">
                     <div class="kicker reveal">库五</div>
-                    <h2 class="big-word reveal" data-editable data-edit-id="s15-title">提示词不是一句话</h2>
-                    <p class="subtitle reveal" data-editable data-edit-id="s15-subtitle">是可组合模块:主体、动作、镜头、光影、材质、约束。</p>
+                    <h2 class="compact-title reveal" data-editable="" data-edit-id="s15-title">提示词不是魔法</h2>
+                    <p class="subtitle reveal" data-editable="" data-edit-id="s15-subtitle">是把营销意图翻译成模型指令的模块系统。</p>
+                    <div class="module-chip-grid reveal">
+                        <span class="module-chip">卖点</span>
+                        <span class="module-chip">人群</span>
+                        <span class="module-chip">场景</span>
+                        <span class="module-chip">动作</span>
+                        <span class="module-chip">镜头</span>
+                        <span class="module-chip">约束</span>
+                    </div>
+                </div>
+                <div class="platform-shot-frame prompt-shot reveal" aria-label="生成提示词库简化示意图">
+                    <img class="platform-shot" src="./a_files/prompt-module-platform.png" alt="生成提示词库简化示意图">
                 </div>
                 <div class="page-mark">15 / 22</div>
             </section>
 
-            <section class="slide" data-slide-title="技术感放在这里讲">
+            <section class="slide" data-slide-title="别炫技要可控">
                 <div class="frame"></div>
                 <div class="hud"><div>TECHNICAL CORE</div><div>CONTROL VARIABLES</div></div>
-                <div class="content-wide">
-                    <div class="kicker reveal">技术感放在这里</div>
-                    <h2 class="reveal" data-editable data-edit-id="s16-title">技术感放在<br>这里讲</h2>
-                    <div class="matrix reveal">
-                        <div class="matrix-cell"><div class="small">CAMERA</div><strong>镜头坐标</strong></div>
-                        <div class="matrix-cell"><div class="small">MOTION</div><strong>运镜限制</strong></div>
-                        <div class="matrix-cell"><div class="small">TEXTURE</div><strong>光影材质</strong></div>
-                        <div class="matrix-cell"><div class="small">NEGATIVE</div><strong>负面约束</strong></div>
-                    </div>
+                <div class="library-copy">
+                    <div class="kicker reveal">可控变量</div>
+                    <h2 class="reveal" data-editable="" data-edit-id="s16-title">别炫技<br>要可控</h2>
+                    <p class="subtitle reveal" data-editable="" data-edit-id="s16-subtitle">能稳定复用的变量，才是企业真正的效率。</p>
+                </div>
+                <div class="control-board reveal">
+                    <div class="control-card" style="--value: 70%;"><div class="axis">CUSTOMER</div><strong>客户场景</strong><div class="meter"></div></div>
+                    <div class="control-card" style="--value: 58%;"><div class="axis">ACTION</div><strong>产品动作</strong><div class="meter"></div></div>
+                    <div class="control-card" style="--value: 82%;"><div class="axis">RHYTHM</div><strong>镜头节奏</strong><div class="meter"></div></div>
+                    <div class="control-card" style="--value: 46%;"><div class="axis">BRAND</div><strong>品牌边界</strong><div class="meter"></div></div>
                 </div>
                 <div class="page-mark">16 / 22</div>
             </section>
@@ -1396,56 +2113,68 @@
             <section class="slide" data-slide-title="库六剪辑发布库">
                 <div class="frame"></div>
                 <div class="hud"><div>LIBRARY 06</div><div>EDITING / PUBLISHING</div></div>
-                <div class="statement">
+                <div class="library-copy">
                     <div class="kicker reveal">库六</div>
-                    <h2 class="big-word reveal" data-editable data-edit-id="s17-title">库六:<br>剪辑发布库</h2>
-                    <p class="subtitle reveal" data-editable data-edit-id="s17-subtitle">AI 生成只是半成品,剪辑才决定能不能投放。</p>
+                    <h2 class="compact-title reveal" data-editable="" data-edit-id="s17-title">库六:<br>剪辑发布库</h2>
+                    <p class="subtitle reveal" data-editable="" data-edit-id="s17-subtitle">AI 生成只是素材,剪辑发布才让它变成触点。</p>
+                    <div class="logic-stack reveal">
+                        <div class="logic-card"><div class="label">EDIT</div><strong>把素材变成触点</strong><span>字幕、节奏、音乐、转场统一处理</span></div>
+                        <div class="logic-card"><div class="label">PUBLISH</div><strong>把一条变成多条</strong><span>按渠道、比例、时长生成触达版本</span></div>
+                    </div>
+                </div>
+                <div class="platform-shot-frame editing-shot reveal" aria-label="剪辑发布库简化示意图">
+                    <img class="platform-shot" src="./a_files/editing-publish-platform.png" alt="剪辑发布库简化示意图">
                 </div>
                 <div class="page-mark">17 / 22</div>
             </section>
 
-            <section class="slide" data-slide-title="同一条素材如何变成多平台版本">
+            <section class="slide" data-slide-title="一条素材如何变成多渠道触点">
                 <div class="frame"></div>
                 <div class="hud"><div>PUBLISHING METHOD</div><div>ONE ASSET / MULTIPLE CUTS</div></div>
                 <div class="content-wide">
                     <div class="kicker reveal">发布复用</div>
-                    <h2 class="reveal" data-editable data-edit-id="s18-title">同一条素材如何<br>变成多平台版本</h2>
-                    <div class="output-strip reveal">
-                        <div class="output-card"><div class="count">01</div><strong>广告片</strong></div>
-                        <div class="output-card"><div class="count">02</div><strong>种草</strong></div>
-                        <div class="output-card"><div class="count">03</div><strong>直播切片</strong></div>
-                        <div class="output-card"><div class="count">04</div><strong>信息流短视频</strong></div>
+                    <h2 class="reveal" data-editable="" data-edit-id="s18-title">一条素材如何<br>变成多渠道触点</h2>
+                    <div class="version-grid reveal">
+                        <div class="version-card" data-ratio="16:9"><div class="label">TOUCH 01</div><strong>销售跟进</strong><span>讲清卖点，适合发给意向客户</span></div>
+                        <div class="version-card" data-ratio="9:16"><div class="label">TOUCH 02</div><strong>私域激活</strong><span>强化使用场景，适合朋友圈和客户群</span></div>
+                        <div class="version-card" data-ratio="1:1"><div class="label">TOUCH 03</div><strong>投放测试</strong><span>保留强开头和产品近景，快速测试反应</span></div>
+                        <div class="version-card" data-ratio="9:16"><div class="label">TOUCH 04</div><strong>渠道转发</strong><span>压缩信息密度，方便合作伙伴复用</span></div>
                     </div>
                 </div>
                 <div class="page-mark">18 / 22</div>
             </section>
 
-            <section class="slide" data-slide-title="完整 workflow 复盘">
+            <section class="slide workflow-review-slide" data-slide-title="六个库如何从卖点走到客户触达">
                 <div class="frame"></div>
                 <div class="hud"><div>WORKFLOW REVIEW</div><div>INPUT TO FINAL CUT</div></div>
                 <div class="content-wide">
                     <div class="kicker reveal">完整 workflow 复盘</div>
-                    <h2 class="reveal" data-editable data-edit-id="s19-title">六个库如何<br>从输入走到成片</h2>
+                    <h2 class="reveal" data-editable="" data-edit-id="s19-title">六个库如何<br>从卖点走到客户触达</h2>
                 </div>
-                <div class="flow-line reveal" style="top: 650px;"></div>
-                <div class="flow-nodes reveal" style="top: 538px;">
-                    <div class="flow-node"><div class="id">01</div><strong>产品<br>素材</strong></div>
-                    <div class="flow-node"><div class="id">02</div><strong>参考<br>视频</strong></div>
-                    <div class="flow-node"><div class="id">03</div><strong>角色<br>场景</strong></div>
-                    <div class="flow-node"><div class="id">04</div><strong>分镜<br>脚本</strong></div>
-                    <div class="flow-node"><div class="id">05</div><strong>生成<br>提示词</strong></div>
-                    <div class="flow-node"><div class="id">06</div><strong>剪辑<br>发布</strong></div>
+                <div class="workflow-canvas reveal">
+                    <div class="workflow-card" data-id="01"><strong>产品资产</strong><span>确定卖什么、给谁看、在哪用</span></div>
+                    <div class="workflow-card" data-id="02"><strong>参考结构</strong><span>确定什么表达已经被验证</span></div>
+                    <div class="workflow-card" data-id="03"><strong>角色场景</strong><span>确定谁出现、出现在哪里</span></div>
+                    <div class="workflow-card" data-id="04"><strong>成交分镜</strong><span>确定先讲什么、后证明什么</span></div>
+                    <div class="workflow-card" data-id="05"><strong>模型执行</strong><span>把营销意图变成可执行指令</span></div>
+                    <div class="workflow-card" data-id="06"><strong>多渠道分发</strong><span>把生成片段变成客户触点</span></div>
                 </div>
                 <div class="page-mark">19 / 22</div>
             </section>
 
-            <section class="slide" data-slide-title="企业真正要沉淀的不是作品">
+            <section class="slide asset-summary-slide" data-slide-title="企业真正沉淀的不是视频">
                 <div class="frame"></div>
                 <div class="hud"><div>BUSINESS LANDING</div><div>REUSABLE VIDEO ASSETS</div></div>
-                <div class="statement">
+                <div class="content-wide">
                     <div class="kicker reveal">落地形态</div>
-                    <h2 class="big-word reveal" data-editable data-edit-id="s20-title">企业真正要沉淀的<br>不是作品</h2>
-                    <p class="subtitle reveal" data-editable data-edit-id="s20-subtitle">是可复用的视频生产资产。</p>
+                    <h2 class="reveal" data-editable="" data-edit-id="s20-title">企业真正沉淀的<br>不是视频</h2>
+                    <p class="subtitle reveal" data-editable="" data-edit-id="s20-subtitle">是可复用的获客生产资产。</p>
+                </div>
+                <div class="asset-value-grid reveal">
+                    <div class="asset-value-card"><div class="label">ASSET 01</div><strong>产品资产</strong><span>产品图、卖点、参数和禁用边界</span></div>
+                    <div class="asset-value-card"><div class="label">ASSET 02</div><strong>表达资产</strong><span>参考视频、分镜结构、口播模板</span></div>
+                    <div class="asset-value-card"><div class="label">ASSET 03</div><strong>执行资产</strong><span>角色场景、提示词模块、控制变量</span></div>
+                    <div class="asset-value-card"><div class="label">ASSET 04</div><strong>触达资产</strong><span>剪辑模板、多渠道版本、发布规范</span></div>
                 </div>
                 <div class="page-mark">20 / 22</div>
             </section>
@@ -1455,11 +2184,11 @@
                 <div class="hud"><div>SUMMARY</div><div>KEY TAKEAWAYS</div></div>
                 <div class="content-wide">
                     <div class="kicker reveal">总结</div>
-                    <h2 class="reveal" data-editable data-edit-id="s21-title">今天的核心结论</h2>
+                    <h2 class="reveal" data-editable="" data-edit-id="s21-title">今天的核心结论</h2>
                     <div class="output-strip reveal">
-                        <div class="output-card"><div class="count">01</div><strong>不是工具</strong></div>
-                        <div class="output-card"><div class="count">02</div><strong>不是提示词</strong></div>
-                        <div class="output-card"><div class="count">03</div><strong>不是作品</strong></div>
+                        <div class="output-card"><div class="count">01</div><strong>不是招人</strong></div>
+                        <div class="output-card"><div class="count">02</div><strong>不是工具</strong></div>
+                        <div class="output-card"><div class="count">03</div><strong>不是视频</strong></div>
                         <div class="output-card"><div class="count">04</div><strong>不是一次性</strong></div>
                     </div>
                 </div>
@@ -1471,10 +2200,10 @@
                 <div class="hud"><div>CLOSING</div><div>CONTENT ENGINE</div></div>
                 <div class="statement">
                     <div class="kicker reveal">最后一句</div>
-                    <h2 class="big-word reveal" data-editable data-edit-id="s22-title">未来不是<br>会不会用 AI</h2>
-                    <p class="subtitle reveal" data-editable data-edit-id="s22-subtitle">是你的企业有没有一台内容引擎。</p>
+                    <h2 class="big-word reveal" data-editable="" data-edit-id="s22-title">未来不是<br>会不会用 AI</h2>
+                    <p class="subtitle reveal" data-editable="" data-edit-id="s22-subtitle">是你的企业有没有一台能持续触达客户的内容引擎。</p>
                 </div>
-                <div class="bottom-note reveal">把一次出片,变成持续生产。</div>
+                <div class="bottom-note reveal">把一次出片,变成持续获客。</div>
                 <div class="page-mark">22 / 22</div>
             </section>
         </main>
@@ -1715,5 +2444,6 @@
         new SlidePresentation();
         new InlineEditor();
     </script>
-</body>
-</html>
+
+
+</body></html>
