@@ -1682,6 +1682,10 @@
             background: #FFFFFF;
         }
 
+        .slide:first-child {
+            background: #FFFFFF;
+        }
+
         .slide::before {
             background-image: none;
             opacity: 0;
@@ -1700,8 +1704,8 @@
         .slide:first-child .frame,
         .slide:first-child .hud div:last-child,
         .slide:first-child .page-mark {
-            border-color: rgba(255,255,255,0.34);
-            color: rgba(255,255,255,0.76);
+            border-color: rgba(8,10,15,0.14);
+            color: rgba(8,10,15,0.5);
         }
 
         .hud {
@@ -2038,6 +2042,62 @@
             display: none;
         }
 
+        .cover-engine-visual {
+            position: absolute;
+            right: 78px;
+            top: 206px;
+            width: 842px;
+            height: 474px;
+            z-index: 4;
+            border-radius: 30px;
+            overflow: hidden;
+            background: #FFFFFF;
+            box-shadow: 0 38px 96px rgba(25,91,255,0.13);
+        }
+
+        .cover-engine-visual img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: 54% center;
+        }
+
+        .cover-image-panel {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 40%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+            background: #195BFF;
+        }
+
+        .cover-image-panel img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center center;
+        }
+
+        .cover-image-panel::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(4,28,128,0.14), rgba(4,28,128,0.03) 42%, rgba(4,28,128,0.22)),
+                linear-gradient(90deg, rgba(25,91,255,0.12), transparent 38%);
+            pointer-events: none;
+        }
+
+        .slide:first-child .hud div:last-child,
+        .slide:first-child .page-mark {
+            color: rgba(255,255,255,0.86);
+            text-shadow: 0 1px 18px rgba(0,34,130,0.42);
+        }
+
         .viewfinder {
             border-color: rgba(255,255,255,0.5);
             background:
@@ -2160,10 +2220,8 @@
                     <p class="subtitle reveal" data-editable="" data-edit-id="s01-subtitle">把内容生产变成降本、增效、拓客能力</p>
                     <p class="cover-author reveal" data-editable="" data-edit-id="s01-author">作者：hoody</p>
                 </div>
-                <div class="viewfinder reveal">
-                    <div class="circle"></div>
-                    <div class="device"></div>
-                    <div class="scan"></div>
+                <div class="cover-image-panel reveal">
+                    <img src="assets/generated/cover-ai-video-marketing-engine-panel.png" alt="AI 视频营销引擎封面场景图">
                 </div>
                 <div class="flow-line reveal"></div>
                 <div class="page-mark">01 / 22</div>
