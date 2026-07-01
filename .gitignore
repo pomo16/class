@@ -6,3 +6,10 @@
 !assets/app-icons/*.jpg
 !assets/generated/
 !assets/generated/*.png
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
