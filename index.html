@@ -2655,6 +2655,10 @@
                         event.preventDefault();
                         this.prev();
                     }
+                    if (event.key === 'f' || event.key === 'F') {
+                        event.preventDefault();
+                        this.toggleFullscreen();
+                    }
                     if (event.key === 'Home') {
                         event.preventDefault();
                         this.showSlide(0);
@@ -2664,6 +2668,26 @@
                         this.showSlide(this.slides.length - 1);
                     }
                 });
+            }
+
+            toggleFullscreen() {
+                const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
+                if (fullscreenElement) {
+                    const exitFullscreen = document.exitFullscreen || document.webkitExitFullscreen;
+                    if (!exitFullscreen) return;
+                    const result = exitFullscreen.call(document);
+                    if (result && typeof result.catch === 'function') {
+                        result.catch(() => {});
+                    }
+                    return;
+                }
+
+                const requestFullscreen = document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen;
+                if (!requestFullscreen) return;
+                const result = requestFullscreen.call(document.documentElement);
+                if (result && typeof result.catch === 'function') {
+                    result.catch(() => {});
+                }
             }
 
             setupWheelNav() {
